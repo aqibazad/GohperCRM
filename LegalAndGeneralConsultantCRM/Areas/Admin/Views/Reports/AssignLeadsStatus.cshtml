@@ -1,0 +1,242 @@
+﻿<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+﻿
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">   </h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">  Leads Follow-Up Status</h3>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="col-md-12">
+                                        <label for="SelectedTeamMember" class="form-label">Team Member</label>
+                                        @Html.DropDownList("SelectedTeamMember", ViewBag.UserList as SelectList, "-- Select Team Member --", new { @class = "form-control col-md-12", id = "SelectedTeamMember" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="col-md-12">
+                                        <label for="SelectedTeamMember" class="form-label"></label>
+                                        <a class="btn btn-primary float-end">
+                                            <i class="bi bi-printer"></i> Print
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table id="leadDetailsTable" class="display expandable-table mt-3" style="width:100%">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="background-color: #4e0973;color:white;">Name</th>
+                                            <th style="background-color: #4e0973;color:white;">Phone no </th>
+                                            <th style="background-color: #4e0973;color:white;">Email</th>
+                                            <th style="background-color: #4e0973;color:white;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+
+@* <!-- partial -->
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Leads Follow-Up Status</p>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="col-md-12">
+                                                <label for="SelectedTeamMember" class="form-label">Team Member</label>
+                                                @Html.DropDownList("SelectedTeamMember", ViewBag.UserList as SelectList, "-- Select Team Member --", new { @class = "form-control col-md-12", id = "SelectedTeamMember" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="col-md-12">
+                                                <label for="SelectedTeamMember" class="form-label"></label>
+                                                <a class="btn btn-primary float-end">
+                                                    <i class="bi bi-printer"></i> Print
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <table id="leadDetailsTable" class="display expandable-table mt-3" style="width:100%">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Phone no </th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- main-panel ends -->
+
+ *@
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        // Set a default team member id (you may adjust this as needed)
+        var defaultTeamMemberId = ""; // You can set a default team member ID or leave it empty
+
+        // Initialize DataTable
+        var initializeDataTable = function (teamMemberId) {
+            $('#leadDetailsTable').DataTable({
+                "ajax": {
+                    "url": "/Admin/Reports/GetStatus?teamMemberId=" + teamMemberId,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "fullName", "name": "First Name", "autoWidth": true },
+                    { "data": "phoneNumber", "autoWidth": true },
+                    { "data": "email", "autoWidth": true },
+                    {
+                        "data": "status",
+                        "name": "Status",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            // Check if the followUpStatus is "Converted Lead" and apply the badge
+                            if (data === "Converted Lead") {
+                                return '<span class="badge bg-success text-white">Converted Lead</span>';
+                            }
+                            // Check if the followUpStatus is "Dead Lead" and apply the badge
+                            else if (data === "Dead Lead") {
+                                return '<span class="badge bg-danger text-white">Dead Lead</span>';
+                            }
+                            else if (data === "Cold Lead") {
+                                return '<span class="badge bg-dark text-white">Cold Lead</span>';
+                            }
+                            // Check if the followUpStatus is "Future Lead" and apply the badge
+                            else if (data === "Future Lead") {
+                                return '<span class="badge bg-secondary text-white">Future Lead</span>';
+                            }
+                            // Check if the followUpStatus is "Hot Lead" and apply the badge
+                            else if (data === "Hot Lead") {
+                                return '<span class="badge bg-primary text-white">Hot Lead</span>';
+                            }
+                            // Check if the followUpStatus is "Warm Lead" and apply the badge
+                            else if (data === "Warm Lead") {
+                                return '<span class="badge bg-info text-white">Warm Lead</span>';
+                            } else {
+                                // You can add more conditions for other statuses if needed
+                                return '<span class="badge bg-warning text-white">Pending Lead</span>';
+                            }
+                        }
+
+                    },
+                ]
+            });
+            $('.dataTables_length').hide(); // Hide the 'Show entries' dropdown
+        };
+
+        // Initialize DataTable without selecting a dropdown option
+        initializeDataTable(defaultTeamMemberId);
+
+        // Handle change event of the dropdown
+        $('#SelectedTeamMember').change(function () {
+            var teamMemberId = $(this).val();
+
+            // Destroy the existing DataTable before initializing a new one
+            $('#leadDetailsTable').DataTable().destroy();
+
+            // Initialize DataTable with the selected team member id
+            initializeDataTable(teamMemberId);
+
+            // Update the print button link with the selected team member id
+            var printLink = "/Admin/Reports/Print?teamMemberId=" + teamMemberId;
+            $('.btn-print').attr('href', printLink);
+        });
+
+        // Handle click event of the print button
+        $('.btn-primary').click(function () {
+            // Get the team member id from the dropdown
+            var teamMemberId = $('#SelectedTeamMember').val();
+
+            // Add your printing logic here, using the teamMemberId parameter
+            // For example, open a new window with the print URL
+            window.open("/Admin/Reports/Print?teamMemberId=" + teamMemberId, '_blank');
+        });
+    });
+</script>

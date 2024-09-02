@@ -1,0 +1,497 @@
+﻿<head>
+    <style>
+        /* Existing styles */
+        .modal-dialog {
+            max-width: 80% !important;
+            margin-right: none !important;
+            margin-left: none !important;
+        }
+
+        /* Added styles for button */
+        .mapping-btn {
+            font-size: 19px;
+            font-weight: 600;
+            color: rebeccapurple;
+            margin-bottom: 10px; /* Add space between buttons */
+            margin-right: 10px; /* Add space between buttons */
+        }
+
+        /* Existing styles */
+        .select-menu {
+            width: 300px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        input[type="file"] {
+            margin: auto;
+            padding: 1.5em;
+            border: 2px dashed #bbb;
+            background-color: #fff;
+            display: inline-block !important;
+        }
+
+            input[type="file"]::file-selector-button {
+                padding: 1em 1.5em;
+                border-width: 0;
+                border-radius: 2em;
+                background-color: hsl(210 70% 30%);
+                color: hsl(210 40% 80%);
+                transition: all .25s ease-in-out;
+                cursor: pointer;
+                margin-right: 1em;
+            }
+
+        /* Existing styles */
+        .select {
+            background-color: #201e1e;
+            padding: 20px;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 6px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+
+        /* Existing styles */
+        .options-list {
+            position: absolute;
+            width: 100%;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            margin-top: 5%;
+            padding: 0 20px;
+            max-height: 180px;
+            overflow-y: auto;
+            -webkit-transition: .4s linear .2s;
+            -o-transition: .4s linear .2s;
+            transition: .4s linear .2s;
+            height: 0;
+        }
+
+        /* Existing styles */
+        .option {
+            padding: 8px 0;
+            font-weight: 500;
+            font-size: 14px;
+            -webkit-transition: .3s ease-in-out;
+            -o-transition: .3s ease-in-out;
+            transition: .3s ease-in-out;
+        }
+
+        /* Existing styles */
+        .options-list::-webkit-scrollbar {
+            width: 4px;
+            background-color: #eee;
+        }
+        /* Added styles for modal header */
+        .modal-title {
+            color: #da0000; /* Red background color */
+            font-weight: bold; /* Bold font weight */
+            animation: pulse 0.5s infinite alternate; /* Animation effect */
+        }
+
+        /* Animation keyframes */
+        @@keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.05);
+            }
+        }
+        /* Existing styles */
+        .options-list::-webkit-scrollbar-thumb {
+            background-color: #00a8ff;
+        }
+
+        /* Existing styles */
+        .options-list.active {
+            height: 180px;
+        }
+    </style>
+   
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">   </h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Follow-Ups   Summary</h3>
+
+                        </div>
+
+
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <main id="main">
+                                    <h2>
+                                        Bulk Upload Leads
+                                    </h2>
+                                    <div class="row" style="width:74%!important">
+                                        <div class="col-md-12 col-lg-12 col-sm-12">
+
+                                            <form asp-action="UploadFile" method="post" enctype="multipart/form-data">
+                                                <div class="form-group">
+
+                                                    <input type="file" name="file" id="file">
+
+                                                </div>
+                                                <br />
+                                                <label for="options">Select Source(Requried)</label>
+                                                <select class="form-control" id="options" name="options" required style="width:46%">
+                                                    <option value="">Select</option>
+                                                    <option value="meta">Meta</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-12">
+                                                <br />
+                                                <br />
+                                                <button type="button" class="btn btn-info" id="showColumnsBtn">Show Columns</button> <button type="button" class="btn btn-success" id="addMappingBtn">Add Mapping</button><button type="button" class="btn btn-warning" id="autoMappingBtn">Auto-Mapping</button>
+                                                <script>
+                                                    // Example data for demonstration purposes
+                                                    const fileColumns = ["FirstName", "LastName", "PhoneNumber", "Email"]; // Replace this with actual file header names
+                                                    const dbColumns = Array.from(document.querySelectorAll("#dbColumnDropdown option")).map(opt => opt.value);
+
+                                                    document.getElementById('autoMappingBtn').addEventListener('click', function () {
+                                                        // Clear previous mappings
+                                                        const mappingDisplayDiv = document.getElementById('mappingDisplayDiv');
+                                                        mappingDisplayDiv.innerHTML = '';
+
+                                                        fileColumns.forEach(fileCol => {
+                                                            // Find a matching database column, ignoring case
+                                                            const matchedDbCol = dbColumns.find(dbCol => dbCol.toLowerCase() === fileCol.toLowerCase());
+
+                                                            if (matchedDbCol) {
+                                                                // Display the mapping
+                                                                const mappingItem = document.createElement('div');
+                                                                mappingItem.innerHTML = `File Column: <strong>${fileCol}</strong> -> Database Column: <strong>${matchedDbCol}</strong>`;
+                                                                mappingDisplayDiv.appendChild(mappingItem);
+
+                                                                // Optionally, you can store these mappings in an array or send them directly to your server
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+
+
+                                                <div class="form-group" style="display: none;" id="headerDropdownDiv">
+                                                    <label for="headerDropdown">Select Column File:</label>
+                                                    <select id="headerDropdown" class="form-control">
+                                                    </select>
+                                                </div>
+
+                                                <br />
+
+                                                <!-- Button trigger modal -->
+                                                <!-- Dropdown to select database columns -->
+                                                <!-- Dropdown to select database columns -->
+                                                <div class="form-group" id="dbColumnDropdownDiv">
+                                                    <label for="dbColumnDropdown">Select Database Column:</label>
+                                                    <select id="dbColumnDropdown" class="form-control">
+                                                        <option value="FirstName">First Name</option>
+                                                        <option value="LastName">Last Name</option>
+                                                        <!-- Add options for remaining columns -->
+                                                        <option value="PhoneNumber">Phone Number</option>
+                                                        <option value="Gender">Gender</option>
+                                                        <option value="CompanyName">Company Name</option>
+                                                        <option value="JobTitle">Job Title</option>
+                                                        <option value="Email">Email</option>
+                                                        <option value="CreatedDate">Created Date</option>
+                                                        <option value="Address">Address</option>
+                                                        <option value="City">City</option>
+                                                        <option value="Profession">Profession</option>
+                                                        <option value="State">State</option>
+                                                        <option value="ZipCode">Zip Code</option>
+                                                        <option value="Country">Country</option>
+                                                        <option value="Notes">Notes</option>
+                                                        <option value="Industry">Industry</option>
+                                                        <option value="LeadSource">Lead Source</option>
+                                                        <option value="LeadSourceDetails">Lead Source Details</option>
+                                                        <option value="BrandId">Brand Id</option>
+                                                        <option value="ProductTypeId">Product Type Id</option>
+                                                        <option value="ProductId">Product Id</option>
+                                                        <option value="ReferralId">Referral Id</option>
+                                                        <option value="SelectedInterestedTags">Selected Interested Tags</option>
+
+
+                                                        <!-- Add other columns as needed -->
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <!-- Display area for mappings -->
+                                                <div id="mappingDisplayDiv" style="height: 250px; overflow-y: auto;">
+                                                    <!-- Mappings will be displayed here -->
+                                                </div>
+                                                <!-- Button trigger modal -->
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <br />
+
+
+                                        <!-- Button to show column names -->
+                                        <!-- Dropdown to display header column names -->
+
+
+
+
+
+
+                                        <div class="text-center">
+                                            <!-- Submit button -->
+                                            <button type="button" class="btn btn-primary" id="submitMappingBtn">Submit</button>
+                                        </div>
+                                        <button hidden type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="cli">Open Modal</button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal" role="dialog">
+                                            <div class="modal-dialog">
+
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+
+                                                        <h4 class="modal-title">Instructions for Lead upload</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <ol>
+                                                            <li><strong>Upload File:</strong> Choose a file with the extension .xls. Data will not be uploaded if the file does not have this extension.</li>
+                                                            <li><strong>Choose Source:</strong> Select a source from the dropdown menu.</li>
+                                                            <li><strong>Click "Show Columns":</strong> View the columns of both the file and the database.</li>
+                                                            <li><strong>Map the Columns:</strong> Match the columns from the file with those in the database.</li>
+                                                            <li><strong>Click "Submit":</strong> Submit the mapped data.</li>
+                                                        </ol>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                </main>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- /.content-wrapper -->
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var mappings = [];
+            document.getElementById("cli").click();
+            function handleFile(file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    var headerNames = [];
+
+                    var headerRange = XLSX.utils.decode_range(firstSheet['!ref']);
+                    for (var C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+                        var headerCell = XLSX.utils.encode_cell({ r: 0, c: C });
+                        headerNames.push(firstSheet[headerCell].v);
+                    }
+
+                    populateDropdown(headerNames);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+
+            function populateDropdown(headerNames) {
+                var dropdown = document.getElementById("headerDropdown");
+                dropdown.innerHTML = "";
+                headerNames.forEach(function (header) {
+                    var option = document.createElement("option");
+                    option.text = header;
+                    dropdown.add(option);
+                });
+            }
+
+            var showColumnsBtn = document.getElementById("showColumnsBtn");
+            showColumnsBtn.addEventListener("click", function () {
+                var fileInput = document.getElementById("file");
+                var file = fileInput.files[0];
+                if (file) {
+                    handleFile(file);
+                    var headerDropdownDiv = document.getElementById("headerDropdownDiv");
+                    headerDropdownDiv.style.display = "block";
+                } else {
+                    document.getElementById("fileError").innerText = "Please select a file.";
+                }
+            });
+
+            var mappingDisplayDiv = document.getElementById("mappingDisplayDiv");
+            mappingDisplayDiv.addEventListener("click", function (event) {
+                if (event.target.classList.contains("deleteMappingBtn")) {
+                    var index = event.target.dataset.index;
+                    mappings.splice(index, 1);
+                    mappingDisplayDiv.removeChild(event.target.parentElement);
+                }
+            });
+
+            var addMappingBtn = document.getElementById("addMappingBtn");
+            addMappingBtn.addEventListener("click", function () {
+                var excelColumn = document.getElementById("headerDropdown").value;
+                var dbColumn = document.getElementById("dbColumnDropdown").value;
+
+                // Check if the mapping already exists
+                var mappingExists = mappings.some(function (mapping) {
+                    return mapping.excelColumn === excelColumn || mapping.dbColumn === dbColumn;
+                });
+
+                if (mappingExists) {
+                    alert("This mapping already exists.");
+                    return; // Exit the function if the mapping already exists
+                }
+
+                mappings.push({ excelColumn: excelColumn, dbColumn: dbColumn });
+                displayMappings();
+            });
+
+            var submitMappingBtn = document.getElementById("submitMappingBtn");
+            submitMappingBtn.addEventListener("click", function () {
+                // Check if mappings array is empty
+                // Check if mappings array is empty
+                if (mappings.length === 0) {
+                    alert("Please first map the columns.");
+                    return; // Exit the function if mappings array is empty
+                }
+                // Check if phone number is mapped
+                var phoneNumberMapped = mappings.some(function (mapping) {
+                    return mapping.dbColumn === "PhoneNumber";
+                });
+                if (!phoneNumberMapped) {
+                    alert("Please map the Phone Number column. It is required.");
+                    return; // Exit the function if phone number is not mapped
+                }
+                // Check if dropdown value is selected
+                var dropdownValue = document.getElementById("options").value;
+                if (dropdownValue !== "meta" && dropdownValue !== "other") {
+                    alert("Please select a source.");
+                    return; // Exit the function if dropdown value is not selected
+                }
+                event.preventDefault();
+
+                var formData = new FormData();
+                formData.append("dropdownValue", document.getElementById("options").value); // Include dropdown value
+
+                formData.append("file", document.getElementById("file").files[0]);
+
+                mappings.forEach(function (mapping, index) {
+
+                    formData.append("mappings[" + index + "].ExcelColumn", mapping.excelColumn);
+                    formData.append("mappings[" + index + "].DbColumn", mapping.dbColumn);
+                });
+
+                fetch("/Employee/MyLead/UploadData", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // Handle response data as needed
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+
+            function displayMappings() {
+                mappingDisplayDiv.innerHTML = "";
+                mappings.forEach(function (mapping, index) {
+                    var mappingDisplay = document.createElement("div");
+                    mappingDisplay.innerHTML = "Excel Column: " + mapping.excelColumn + ", Database Column: " + mapping.dbColumn;
+
+                    // Add styles to mappingDisplay div
+                    mappingDisplay.style.backgroundColor = "darkpurple";
+                    mappingDisplay.style.fontWeight = "bold";
+
+                    var deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.classList.add("deleteMappingBtn", "btn", "btn-primary"); // Add "btn-primary" class here
+
+                    deleteBtn.classList.add("deleteMappingBtn");
+                    deleteBtn.dataset.index = index;
+                    mappingDisplay.appendChild(deleteBtn);
+
+                    // Add a line break after the delete button
+                    mappingDisplay.appendChild(document.createElement("br"));
+                    // Add a line break after the delete button
+                    mappingDisplay.appendChild(document.createElement("br"));
+
+                    mappingDisplayDiv.appendChild(mappingDisplay);
+                });
+            }
+
+        });
+    </script>
+}

@@ -1,0 +1,140 @@
+﻿@model LegalAndGeneralConsultantCRM.ViewModels.SocialMediaViewModel
+
+@{
+    ViewData["Title"] = "Edit Social Media Links";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
+        <div class="container-full">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container">
+                    <h2 class="text-center">@ViewData["Title"]</h2>
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-container">
+                                <form asp-action="EditSocialMedia" method="post">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-facebook-f"></i> Facebook
+                                            </label>
+                                            <input asp-for="Facebook" class="form-control" />
+                                            <span asp-validation-for="Facebook" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-twitter"></i> Twitter
+                                            </label>
+                                            <input asp-for="Twitter" class="form-control" />
+                                            <span asp-validation-for="Twitter" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-instagram"></i> Instagram
+                                            </label>
+                                            <input asp-for="Instagram" class="form-control" />
+                                            <span asp-validation-for="Instagram" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-tiktok"></i> TikTok
+                                            </label>
+                                            <input asp-for="TikTok" class="form-control" />
+                                            <span asp-validation-for="TikTok" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-linkedin-in"></i> LinkedIn
+                                            </label>
+                                            <input asp-for="LinkedIn" class="form-control" />
+                                            <span asp-validation-for="LinkedIn" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-youtube"></i> YouTube
+                                            </label>
+                                            <input asp-for="YouTube" class="form-control" />
+                                            <span asp-validation-for="YouTube" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-snapchat-ghost"></i> Snapchat
+                                            </label>
+                                            <input asp-for="Snapchat" class="form-control" />
+                                            <span asp-validation-for="Snapchat" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-pinterest-p"></i> Pinterest
+                                            </label>
+                                            <input asp-for="Pinterest" class="form-control" />
+                                            <span asp-validation-for="Pinterest" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fab fa-reddit-alien"></i> Reddit
+                                            </label>
+                                            <input asp-for="Reddit" class="form-control" />
+                                            <span asp-validation-for="Reddit" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">
+                                                <i class="fas fa-globe"></i> Other
+                                            </label>
+                                            <input asp-for="Other" class="form-control" />
+                                            <span asp-validation-for="Other" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

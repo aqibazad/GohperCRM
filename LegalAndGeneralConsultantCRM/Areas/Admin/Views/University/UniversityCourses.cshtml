@@ -1,0 +1,248 @@
+﻿@model LegalAndGeneralConsultantCRM.Models.Universiies.UniversityCourse
+<style>
+
+
+    .grid-margin {
+        margin-top: 20px; /* Adjust as needed */
+        margin-bottom: 20px; /* Adjust as needed */
+    }
+
+    .stretch-card {
+        width: 100%; /* Ensures the card stretches to fill its container */
+    }
+
+    .card {
+        border: 1px solid #ddd; /* Add a border for better visibility */
+    }
+
+    .card-title {
+        margin-bottom: 20px; /* Add some space below the card title */
+    }
+
+</style>
+
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                // Display the success message as a popup alert
+                $(document).ready(function () {
+                    alert('@TempData["SuccessMessage"]');
+                });
+            </script>
+        }
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">   </h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Add  University Courses</h3>
+                            <div class="float-right">
+                            </div>
+                        </div>
+
+
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+                            <div class="p-5" style="background-color:#ECEEF7;padding:20px!important; border-radius:10px;">
+                                <form asp-action="UniversityCourses" asp-controller="University" asp-area="Admin" method="post" onsubmit="return validateForm()">
+                                    <div class="form-group">
+                                        <label for="university">Select University:</label>
+                                        <select class="form-control" name="universityId" required>
+                                            <option value="">Select a university</option>
+                                            @foreach (var uni in ViewBag.Uni)
+                                            {
+                                                <option value="@uni.UniversityId">@uni.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+
+                                    <h4 class="mt-4">Courses</h4>
+                                    <div id="courses-container" class="mb-4">
+                                        <!-- Courses will be appended here -->
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" onclick="addCourse()">Add Course</button>
+                                        <input type="submit" value="Submit" class="btn btn-success" />
+                                    </div>
+                                </form>
+
+                                 </<div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+
+        </section>
+
+    </div>
+</div>
+
+
+
+
+<!-- partial -->
+@* <div class="main-panel">
+    <div class="content-wrapper">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                // Display the success message as a popup alert
+                $(document).ready(function () {
+                    alert('@TempData["SuccessMessage"]');
+                });
+            </script>
+        }
+        <div class="row justify-content-center">
+            <!-- Center the form -->
+            <div class="col-lg-8 grid-margin stretch-card">
+                <!-- Adjust column size for responsiveness -->
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"> University Courses</h4>
+                        <form asp-action="UniversityCourses" asp-controller="University" asp-area="Admin" method="post" onsubmit="return validateForm()">
+                            <div class="form-group">
+                                <label for="university">Select University:</label>
+                                <select class="form-control" name="universityId" required>
+                                    <option value="">Select a university</option>
+                                    @foreach (var uni in ViewBag.Uni)
+                                    {
+                                        <option value="@uni.UniversityId">@uni.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+
+                            <h4 class="mt-4">Courses</h4>
+                            <div id="courses-container" class="mb-4">
+                                <!-- Courses will be appended here -->
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="addCourse()">Add Course</button>
+                                <input type="submit" value="Submit" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ *@
+
+<script>
+    let courseCount = 0;
+    const courses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Courses));
+
+    function addCourse() {
+        const coursesContainer = document.getElementById('courses-container');
+
+        const courseCard = document.createElement('div');
+        courseCard.classList.add('card', 'mb-3', 'course-entry');
+        courseCard.id = `course-entry-${courseCount}`;
+
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+
+        const cardTitle = document.createElement('h5');
+        cardTitle.classList.add('card-title');
+        cardTitle.textContent = `Course ${courseCount + 1}`;
+
+        const select = document.createElement('select');
+        select.classList.add('form-control', 'mb-2');
+        select.name = `UniversityCourses[${courseCount}].CourseId`;
+        select.required = true; // Add required attribute to course select
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select a course";
+        select.appendChild(defaultOption);
+
+        courses.forEach(course => {
+            // Check if the course has already been selected
+            const selectedCourses = document.querySelectorAll('select[name^="UniversityCourses["]');
+            const selectedIds = Array.from(selectedCourses).map(select => select.value);
+            if (!selectedIds.includes(course.CourseId.toString())) {
+                const option = document.createElement('option');
+                option.value = course.CourseId;
+                option.textContent = course.Name;
+                select.appendChild(option);
+            }
+        });
+
+        const tuitionFeeLabel = document.createElement('label');
+        tuitionFeeLabel.textContent = 'Tuition Fee:';
+        tuitionFeeLabel.htmlFor = `tuitionFee-${courseCount}`;
+
+        const tuitionFeeInput = document.createElement('input');
+        tuitionFeeInput.type = 'number';
+        tuitionFeeInput.classList.add('form-control', 'mb-2');
+        tuitionFeeInput.name = `UniversityCourses[${courseCount}].TuitionFee`;
+        tuitionFeeInput.id = `tuitionFee-${courseCount}`;
+        tuitionFeeInput.placeholder = 'Tuition Fee';
+        tuitionFeeInput.required = true; // Add required attribute to tuition fee input
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('btn', 'btn-danger', 'mt-2');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => removeCourse(courseCard.id);
+
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(select);
+        cardBody.appendChild(tuitionFeeLabel);
+        cardBody.appendChild(tuitionFeeInput);
+        cardBody.appendChild(removeButton);
+        courseCard.appendChild(cardBody);
+
+        coursesContainer.appendChild(courseCard);
+
+        courseCount++;
+    }
+
+    function removeCourse(courseId) {
+        const courseCard = document.getElementById(courseId);
+        courseCard.remove();
+    }
+
+    function validateForm() {
+        const coursesSelected = document.querySelectorAll('select[name^="UniversityCourses["]').length;
+        if (coursesSelected === 0) {
+            alert('Please select at least one course.');
+            return false;
+        }
+
+        const invalidElements = document.querySelectorAll('select:invalid, input:invalid'); // Check for invalid elements
+        if (invalidElements.length > 0) {
+            alert('Please fill out all required fields.'); // Alert if any required fields are empty
+            return false;
+        }
+
+        return true;
+    }
+</script>

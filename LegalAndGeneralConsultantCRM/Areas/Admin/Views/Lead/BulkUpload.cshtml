@@ -1,0 +1,102 @@
+﻿@model LegalAndGeneralConsultantCRM.ViewModels.Leads.BulkUploadViewModel
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+        @if (TempData["Message"] != null)
+        {
+            <script>
+                alert('@TempData["Message"]');
+            </script>
+        }
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">Add Bulk Leads</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class=" "><a href="#"> </a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Ad Bulk Leads</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Manage Leads</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">  Effortlessly Import Leads in Bulk</h4>
+                        </div>
+                        <!-- /.box-header -->
+                        
+                            <div class="box-body">
+                            <h4 class="box-title text-info"><i class="ti-user mr-15"></i>   Import Leads in Bulk</h4>
+                                <hr class="my-15  ">
+                                <div class="p-5" style="background-color:#ECEEF7;padding:20px!important; border-radius:10px;">
+                                <div class="col-12">
+                                    <form id="uploadForm" asp-action="UploadBulkData" method="post" enctype="multipart/form-data">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="File" class="control-label">Select File (CSV/Excel):</label>
+                                            <input asp-for="File" type="file" class="form-control" required>
+                                            <span asp-validation-for="File" class="text-danger"></span>
+                                        </div>
+                                        <div class="text-center mb-3">
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                        </div>
+                                    </form>
+
+                                    <!-- Download sample file section -->
+                                    <div class="text-center">
+                                        <p>Download a sample file to see the required format:</p>
+                                        <a href="~/leads/leads.csv" class="btn btn-success btn-rounded btn-fw" download>
+                                            <i class="bi bi-download"></i> Download Sample CSV
+                                        </a>
+                                        <a href="~/sample/newleads.xlsx" class="btn btn-warning btn-rounded btn-fw" download>
+                                            <i class="bi bi-download"></i>&nbsp;Download Sample Excel
+                                        </a>
+
+                                    </div>
+                                </div>
+                                </div>
+
+
+
+                            </div>
+                            <!-- /.box-body -->
+                             
+                        
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+
+
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+</div>
+ 
+@section Scripts {
+    <script>
+        // Client-side validation for file extension
+        document.getElementById("uploadForm").addEventListener("submit", function (event) {
+            var fileInput = document.getElementById("File");
+            var allowedExtensions = /(\.csv|\.xlsx?)$/i;
+            if (!allowedExtensions.exec(fileInput.value)) {
+                alert('Please upload file having extensions .csv or .xlsx only.');
+                event.preventDefault();
+            }
+        });
+    </script>
+}

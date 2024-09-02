@@ -1,0 +1,123 @@
+﻿@{
+     
+    var cities = new List<string> { "Karachi", "Lahore", "Faisalabad", "Rawalpindi", "Multan", "Peshawar", "Quetta", "Sargodha", "Sialkot", "Gujranwala", "Bahawalpur", "Sukkur", "Larkana", "Sheikhupura", "Gujrat", "Jhang", "Dera Ghazi Khan", "Sahiwal", "Nawabshah", "Mardan", "Mirpur Khas", "Rahim Yar Khan", "Okara", "Khanpur", "Kasur", "Chiniot", "Muzaffargarh", "Burewala", "Jhelum", "Shikarpur", "Hafizabad", "Kohat", "Mingora", "Attock", "Mandi Bahauddin", "Jacobabad", "Turbat", "Dadu", "Gojra", "Tando Allahyar", "Tando Muhammad Khan", "Kamoke", "Khushab", "Kot Addu", "Jaranwala", "Pakpattan", "Bahawalnagar", "Tando Adam", "Kandhkot", "Vihari", "Dera Ismail Khan", "Chishtian", "Hub", "Narowal", "Jalalpur Jattan", "Charsadda", "Mansehra", "Abbottabad", "Chakwal", "Khairpur", "Chiniot", "Lodhran", "Nowshera", "Swabi", "Tando Jam", "Hassan Abdal", "Daska", "Mandi Bahauddin", "Jhang Sadr", "Muzaffarabad", "Jampur", "Tando Qaisrani", "Chiniot", "Chaman", "Gwadar", "Sadiqabad", "Nankana Sahib", "Umerkot", "Kotli", "Mithi", "Skardu", "Gilgit", "Hunza", "Kalat", "Pasni", "Ormara", "Khuzdar", "Zhob", "Sibi", "Dera Murad Jamali", "Turbat", "Dera Allah Yar", "Usta Muhammad", "Harnai", "Loralai", "Mastung" };
+
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title"> City-Wise Leads Report</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <!-- Add breadcrumb if necessary -->
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Filter by City</h3>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <select class="form-control" id="city" name="city" required>
+                                        <option value="">Select City</option>
+                                        @foreach (var city in cities)
+                                        {
+                                            <option value="@city">@city</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Add additional filters if needed -->
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-primary float-end btn-print">
+                                        <i class="bi bi-printer"></i> Print
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table id="leadDetailsTable" class="display expandable-table mt-3" style="width:100%">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="background-color: #4e0973; color:white;">Name</th>
+                                            <th style="background-color: #4e0973; color:white;">Gender</th>
+                                            <th style="background-color: #4e0973; color:white;">Phone no</th>
+                                            <th style="background-color: #4e0973; color:white;">Email</th>
+                                            <th style="background-color: #4e0973; color:white;">City</th>
+                                            <th style="background-color: #4e0973; color:white;">Lead Source</th>
+                                            <th style="background-color: #4e0973; color:white;">Created Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        var leadDetailsTable = $('#leadDetailsTable').DataTable({
+            "ajax": {
+                "url": "/Admin/Reports/GetCityViseLead",
+                "data": function (d) {
+                    d.city = $('#city').val(); // Send selected city as parameter
+                },
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "fullName", "autoWidth": true },
+                { "data": "gender", "autoWidth": true },
+                { "data": "phoneNumber", "autoWidth": true },
+                { "data": "email", "autoWidth": true },
+                { "data": "city", "autoWidth": true },
+                { "data": "leadSource", "autoWidth": true },
+                {
+                    "data": "createdDate", "autoWidth": true, "render": function (data) {
+                        return data ? new Date(data).toLocaleDateString() : "";
+                    }
+                },
+            ]
+        });
+
+        // Handle change event of the dropdown
+        $('#city').change(function () {
+            leadDetailsTable.ajax.reload(); // Reload DataTable with the selected city
+        });
+
+        // Handle click event of the print button
+        $('.btn-print').click(function () {
+            var city = $('#city').val();
+            window.open("/Admin/Reports/PrintCityReport?city=" + city, '_blank');
+        });
+    });
+</script>

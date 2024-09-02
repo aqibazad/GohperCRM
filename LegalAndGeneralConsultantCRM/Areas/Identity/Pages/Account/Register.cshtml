@@ -1,0 +1,150 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container h-p100">
+    <div class="row align-items-center justify-content-md-center h-p100">
+        <div class="col-12">
+            <div class="row justify-content-center no-gutters">
+                <div class="col-lg-5 col-md-5 col-12">
+                    <div class="bg-white rounded30 shadow-lg">
+                        <div class="content-top-agile p-30">
+                            <h2 class="text-primary">
+                                <img src="~/images/logo/by.jpeg" />
+                            </h2>
+                            <h4 class="text-primary">Sign up to continue</h4>
+                        </div>
+                        <div class="p-30">
+                            <form id="account" method="post">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-transparent"><i class="ti-user"></i></span>
+                                        </div>
+                                        <input type="text" id="username" name="UserName" class="form-control pl-15 bg-transparent" placeholder="Name" required>
+                                    </div>
+                                    <span id="username-error" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-transparent"><i class="ti-user"></i></span>
+                                        </div>
+                                        <input type="text" id="email" name="Email" class="form-control pl-15 bg-transparent" placeholder="Email" required>
+                                    </div>
+                                    <span id="email-error" class="text-danger"></span>
+                                    <small class="form-text text-muted">Note: Your email will be used as your username.</small>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-transparent"><i class="ti-lock"></i></span>
+                                        </div>
+                                        <input type="password" id="password" name="Password" class="form-control pl-15 bg-transparent" placeholder="Password" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent" onclick="togglePassword('password', 'toggleIcon')" style="cursor: pointer;">
+                                                <i id="toggleIcon" class="fa fa-eye-slash"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span id="password-error" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-transparent"><i class="ti-lock"></i></span>
+                                        </div>
+                                        <input type="password" id="confirmpassword" name="ConfirmPassword" class="form-control pl-15 bg-transparent" placeholder="Confirm Password" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-transparent" onclick="togglePassword('confirmpassword', 'toggleIconConfirm')" style="cursor: pointer;">
+                                                <i id="toggleIconConfirm" class="fa fa-eye-slash"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span id="confirm-password-error" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-danger mt-10">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#account').on('submit', function () {
+                var username = $('#username').val();
+                var email = $('#email').val();
+                var password = $('#password').val();
+                var confirmPassword = $('#confirmpassword').val();
+
+                var isValid = true;
+
+                // Validate username for spaces
+                if (/\s/.test(username)) {
+                    toastr.error('Username cannot contain spaces.');
+                    isValid = false;
+                }
+
+                // Validate email (additional client-side validation if needed)
+                if (!email) {
+                    toastr.error('Email is required.');
+                    isValid = false;
+                }
+
+                // Validate password complexity
+                var hasUpperCase = /[A-Z]/.test(password);
+                var hasNumber = /[0-9]/.test(password);
+                var hasSpecialChar = /[!@@#$%^&*(),.?":{}|<>]/.test(password);
+
+                if (!hasUpperCase || !hasNumber || !hasSpecialChar) {
+                    toastr.error('Password must contain at least one uppercase letter, one special character, and one number.');
+                    isValid = false;
+                }
+
+                // Validate password match
+                if (password !== confirmPassword) {
+                    toastr.error('Passwords do not match.');
+                    isValid = false;
+                }
+
+                return isValid; // Prevent form submission if validation fails
+            });
+        });
+
+        function togglePassword(fieldId, iconId) {
+            var passwordField = document.getElementById(fieldId);
+            var toggleIcon = document.getElementById(iconId);
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

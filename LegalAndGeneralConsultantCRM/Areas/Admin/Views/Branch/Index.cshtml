@@ -1,0 +1,317 @@
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    alert('@TempData["SuccessMessage"]');
+                });
+            </script>
+        }
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">   </h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Our Branches Summary</h3>
+                             <div class="float-right">
+
+                                <div class="mb-3 d-flex justify-content-end">
+                                    <button class="btn float-end btn-primary" data-bs-toggle="modal" data-bs-target="#addBranchModal"><i class="bi bi-plus-circle"></i>&nbsp;Add Branch</button>
+                                 </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table id="branchTable" class="display expandable-table" style="width:100%">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="background-color: #4e0973;color:white;">Name</th>
+                                            <th style="background-color: #4e0973;color:white;">Code</th>
+                                            <th style="background-color: #4e0973;color:white;">Description</th>
+                                            <th style="background-color: #4e0973;color:white;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+
+ 
+<!-- Add Branch Modal -->
+<div class="modal fade" id="addBranchModal" tabindex="-1" aria-labelledby="addBranchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBranchModalLabel">Add Branch</h5>
+            </div>
+            <div class="modal-body">
+                <form id="addBranchForm" novalidate>
+                    <div class="mb-3">
+                        <label for="addBranchName" class="form-label">Branch Name</label>
+                        <input type="text" class="form-control" id="addBranchName" name="BranchName" required />
+                        <div class="invalid-feedback">
+                            Please provide a branch name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addBranchCode" class="form-label">Branch Code</label>
+                        <input type="text" class="form-control" id="addBranchCode" name="BranchCode" required />
+                        <div class="invalid-feedback">
+                            Please provide a branch code.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addBranchDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="addBranchDescription" name="Description" rows="3"></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveBranchButton">Save Branch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Branch Modal -->
+<div class="modal fade" id="editBranchModal" tabindex="-1" aria-labelledby="editBranchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBranchModalLabel">Edit Branch</h5>
+            </div>
+            <div class="modal-body">
+                <form id="editBranchForm">
+                    <input type="hidden" id="branchId" name="BranchId" />
+                    <div class="mb-3">
+                        <label for="editBranchName" class="form-label">Branch Name</label>
+                        <input type="text" class="form-control" id="editBranchName" name="BranchName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBranchCode" class="form-label">Branch Code</label>
+                        <input type="text" class="form-control" id="editBranchCode" name="BranchCode" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBranchDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editBranchDescription" name="Description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="updateBranchButton">Update Branch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#branchTable').DataTable({
+                "ajax": {
+                    "url": "/Admin/Branch/GetBranches",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "branchName", "autoWidth": true },
+                    { "data": "branchCode", "autoWidth": true },
+                    { "data": "description", "autoWidth": true },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            var editButton = '<button type="button" class="btn btn-primary edit-btn me-2" ' +
+                                'data-id="' + row.branchId + '" ' +
+                                'data-name="' + (row.branchName || '') + '" ' +
+                                'data-code="' + (row.branchCode || '') + '" ' +
+                                'data-description="' + (row.description || '') + '" ' +
+                                'style="padding: 12px; margin-right: 5px;">' +
+                                '<i class="bi bi-pencil" style="margin-right: 5px;"></i>' +
+                                '</button>';
+
+                            var deleteButton = '<button type="button" class="btn btn-danger delete-btn" ' +
+                                'data-id="' + row.branchId + '" ' +
+                                'style="padding: 12px; margin-right: 5px;">' +
+                                '<i class="bi bi-trash" style="margin-right: 5px;"></i>' +
+                                '</button>';
+
+                            return editButton + deleteButton;
+                        }
+                    }
+                ]
+            });
+            $('.dataTables_length').hide(); // Hide the 'Show entries' dropdown
+
+            $('#branchTable').on('click', '.edit-btn', function () {
+                var branchId = $(this).data('id');
+                var branchName = $(this).data('name');
+                var branchCode = $(this).data('code');
+                var description = $(this).data('description');
+
+                $('#branchId').val(branchId);
+                $('#editBranchName').val(branchName);
+                $('#editBranchCode').val(branchCode);
+                $('#editBranchDescription').val(description);
+
+                $('#editBranchModal').modal('show');
+            });
+
+            $('#updateBranchButton').on('click', function () {
+                var $form = $('#editBranchForm');
+                var isValid = $form[0].checkValidity();
+
+                if (!isValid) {
+                    $form.addClass('was-validated');
+                    return;
+                }
+
+                var branchId = $('#branchId').val();
+                var branchName = $('#editBranchName').val();
+                var branchCode = $('#editBranchCode').val();
+                var description = $('#editBranchDescription').val();
+
+                var data = {
+                    BranchId: branchId,
+                    BranchName: branchName,
+                    BranchCode: branchCode,
+                    Description: description
+                };
+
+                $.ajax({
+                    url: '/Admin/Branch/EditBranch',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        console.log('Server response:', response);
+
+                        if (response.success) {
+                            $('#editBranchModal').modal('hide');
+                            alert(response.message);
+                            $('#branchTable').DataTable().ajax.reload();
+                        } else {
+                            alert('Failed to update branch: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error updating branch:', error);
+                    }
+                });
+            });
+
+            $('#branchTable').on('click', '.delete-btn', function () {
+                var branchId = $(this).data('id'); // Get the branch ID from data attribute
+
+                if (confirm('Are you sure you want to delete this branch?')) {
+                    $.ajax({
+                        url: '/Admin/Branch/DeleteBranch', // The URL for the delete request
+                        type: 'POST', // HTTP method
+                        contentType: 'application/json', // Content type of the request
+                        data: JSON.stringify(branchId), // Send the branchId as JSON
+                        success: function (response) {
+                            console.log('Server response:', response);
+
+                            if (response.success) {
+                                alert(response.message);
+                                $('#branchTable').DataTable().ajax.reload(); // Reload the DataTable
+                            } else {
+                                alert('Failed to delete branch: ' + response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error deleting branch:', error);
+                        }
+                    });
+                }
+            });
+
+            $('#saveBranchButton').on('click', function () {
+                var $form = $('#addBranchForm');
+                var isValid = $form[0].checkValidity();
+
+                if (!isValid) {
+                    $form.addClass('was-validated');
+                    return;
+                }
+
+                var branchName = $('#addBranchName').val();
+                var branchCode = $('#addBranchCode').val();
+                var description = $('#addBranchDescription').val();
+
+                var data = {
+                    BranchName: branchName,
+                    BranchCode: branchCode,
+                    Description: description
+                };
+
+                $.ajax({
+                    url: '/Admin/Branch/AddBranch',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        console.log('Server response:', response);
+
+                        if (response.success) {
+                            $('#addBranchModal').modal('hide');
+                            alert(response.message);
+                            $('#branchTable').DataTable().ajax.reload();
+
+                            // Reset form fields
+                            $('#addBranchForm')[0].reset();
+                            $form.removeClass('was-validated'); // Remove validation state
+                        } else {
+                            alert('Failed to add branch: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error adding branch:', error);
+                    }
+                });
+            });
+        });
+    </script>
+
+}

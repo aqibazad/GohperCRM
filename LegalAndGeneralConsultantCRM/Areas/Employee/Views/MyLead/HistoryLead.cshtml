@@ -1,0 +1,93 @@
+﻿<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+</head>
+
+<div class="content-wrapper">
+    <div class="content-wrapper-before"></div>
+    <div class="container-full">
+
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">   </h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Lead History</h3>
+                            <div class="float-right">
+                                <a href="#" data-toggle="modal" data-target="#add-new-events" class="btn btn-primary btn-block my-10">
+                                    <i class="ti-plus"></i> Add New Lead
+                                </a>
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table id="leadHistoryTable" class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                                    <thead>
+                                        <tr>
+                                            <th>Lead History ID</th>
+                                            <th>Status</th>
+                                            <th>Follow-up Date</th>
+                                            <th>User Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.LeadHistoryId</td>
+                                                <td>@item.Status</td>
+                                                <td>@item.LeadFollowupDate?.ToString("MM/dd/yyyy")</td>
+                                                <td>@item.UserName</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#leadHistoryTable').DataTable();
+        });
+    </script>
+}

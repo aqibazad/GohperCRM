@@ -1,0 +1,268 @@
+﻿@{
+    var cities = new List<string> { "Karachi", "Lahore", "Faisalabad", "Rawalpindi", "Multan", "Peshawar", "Quetta", "Sargodha", "Sialkot", "Gujranwala", "Bahawalpur", "Sukkur", "Larkana", "Sheikhupura", "Gujrat", "Jhang", "Dera Ghazi Khan", "Sahiwal", "Nawabshah", "Mardan", "Mirpur Khas", "Rahim Yar Khan", "Okara", "Khanpur", "Kasur", "Chiniot", "Muzaffargarh", "Burewala", "Jhelum", "Shikarpur", "Hafizabad", "Kohat", "Mingora", "Attock", "Mandi Bahauddin", "Jacobabad", "Turbat", "Dadu", "Gojra", "Tando Allahyar", "Tando Muhammad Khan", "Kamoke", "Khushab", "Kot Addu", "Jaranwala", "Pakpattan", "Bahawalnagar", "Tando Adam", "Kandhkot", "Vihari", "Dera Ismail Khan", "Chishtian", "Hub", "Narowal", "Jalalpur Jattan", "Charsadda", "Mansehra", "Abbottabad", "Chakwal", "Khairpur", "Chiniot", "Lodhran", "Nowshera", "Swabi", "Tando Jam", "Hassan Abdal", "Daska", "Mandi Bahauddin", "Jhang Sadr", "Muzaffarabad", "Jampur", "Tando Qaisrani", "Chiniot", "Chaman", "Gwadar", "Sadiqabad", "Nankana Sahib", "Umerkot", "Kotli", "Mithi", "Skardu", "Gilgit", "Hunza", "Kalat", "Pasni", "Ormara", "Khuzdar", "Zhob", "Sibi", "Dera Murad Jamali", "Turbat", "Dera Allah Yar", "Usta Muhammad", "Harnai", "Loralai", "Mastung" }
+        ; // Add your city names here
+    var citiesJson = Newtonsoft.Json.JsonConvert.SerializeObject(cities);
+}
+@model LegalAndGeneralConsultantCRM.ViewModels.Leads.LeadViewModel
+  <div class="content-wrapper">
+	  <div class="content-wrapper-before"></div>
+	  <div class="container-full">	  
+
+		<!-- Main content -->
+		<section class="content">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="w-p100 d-md-flex align-items-center justify-content-between">
+                        <h3 class="page-title">Add New Lead</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class=" "><a href="#"> </a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Add New Lead</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Manage Leads</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+			<div class="row">			  
+				<div class="col-lg-12 col-12">
+					  <div class="box">
+						<div class="box-header with-border">
+                            <h4 class="box-title">New Lead</h4>
+						</div>
+						<!-- /.box-header -->
+                        <form  class="form" asp-controller="Lead" asp-action="LeadForm" method="post" asp-area="Admin">
+                            <div class="box-body" >
+								<h4 class="box-title text-info"><i class="ti-user mr-15"></i> Lead Info</h4>
+								<hr class="my-15  ">
+                                <div class="p-5" style="background-color:#ECEEF7;padding:20px!important; border-radius:10px;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+
+                                                <input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" required>
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" required>
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>E-mail</label>
+                                                <input type="email" class="form-control" asp-for="Email" placeholder="Email" required>
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Contact Number</label>
+                                                <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" required pattern="\d{12,}">
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Gender</label>
+                                                <select asp-for="Gender" class="form-control" required>
+                                                    <option value="">--- Select Gender ---</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Lead Source</label>
+                                                <select class="form-control" asp-for="LeadSource">
+                                                    <option value="">Select Lead Source</option>
+                                                    <option value="Social Media">Social Media</option>
+                                                    <option value="Website">Website</option>
+                                                    <option value="Event">Event</option>
+                                                    <option value="Walk in">Walk in</option>
+                                                    <option value="Partner/Referral">Partner/Referral</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                                <span asp-validation-for="LeadSource" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <select class="form-control" asp-for="City" required>
+                                                    <option value="">Select City</option>
+                                                    @foreach (var city in cities)
+                                                    {
+                                                        <option value="@city">@city</option>
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="City" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Notes</label>
+                                                <input type="text" class="form-control" asp-for="Notes" placeholder="Notes">
+                                                <span asp-validation-for="Notes" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <textarea class="form-control" asp-for="Address" placeholder="Lead Address" rows="4"></textarea>
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+								
+                            
+                            
+                            </div>
+							<!-- /.box-body -->
+							<div class="box-footer">
+                                <a href="/Admin/Dashboard/Index" class="btn btn-rounded btn-warning btn-outline mr-1">
+								  <i class="ti-trash"></i> Cancel
+                                </a>                            
+								<button type="submit" class="btn btn-rounded btn-primary btn-outline">
+								  <i class="ti-save-alt"></i> Save
+								</button>
+							</div>  
+						</form>
+					  </div>
+					  <!-- /.box -->			
+				</div>  
+
+			 
+			 
+		    </div>
+			 
+		</section>
+		<!-- /.content -->
+	  </div>
+  </div>
+ 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var errorMessage = '@TempData["error"]';
+            // Display Toastr notification if there is an error
+            if (errorMessage) {
+
+
+                toastr.error(errorMessage);
+            }
+
+                // The rest of your existing JavaScript code...
+
+                $('form').submit(function (event) {
+                    var isValid = true;
+                    var namePattern = /^(?![0-9]*$)[a-zA-Z0-9 ]{3,}$/;
+
+                    var firstName = $('input[name="FirstName"]').val();
+                    if (!namePattern.test(firstName)) {
+                        isValid = false;
+                        $('span[data-valmsg-for="FirstName"]').text("First Name must be at least 3 characters long and cannot be only numbers");
+                    } else {
+                        $('span[data-valmsg-for="FirstName"]').text("");
+                    }
+                    var city = $('input[name="City"]').val();
+                    if (!namePattern.test(city)) {
+                        isValid = false;
+                        $('span[data-valmsg-for="City"]').text("City Name must be at least 3 characters long and cannot be only numbers");
+                    } else {
+                        $('span[data-valmsg-for="City"]').text("");
+                    }
+
+                    var lastName = $('input[name="LastName"]').val();
+                    if (!namePattern.test(lastName)) {
+                        isValid = false;
+                        $('span[data-valmsg-for="LastName"]').text("Last Name must be at least 3 characters long and cannot be only numbers");
+                    } else {
+                        $('span[data-valmsg-for="LastName"]').text("");
+                    }
+
+                    var leadSource = $('input[name="LeadSource"]').val();
+                    if (leadSource.length > 30) {
+                        isValid = false;
+                        $('span[data-valmsg-for="LeadSource"]').text("Lead Source must not exceed 30 characters");
+                    } else {
+                        $('span[data-valmsg-for="LeadSource"]').text("");
+                    }
+
+                    var address = $('textarea[name="Address"]').val();
+                    if (address.length > 30) {
+                        isValid = false;
+                        $('span[data-valmsg-for="Address"]').text("Address must not exceed 30 characters");
+                    } else {
+                        $('span[data-valmsg-for="Address"]').text("");
+                    }
+
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
+
+            $('input[name="LeadSource"]').on('input', function () {
+                var leadSource = $(this).val();
+                if (leadSource.length > 30) {
+                    $('span[data-valmsg-for="LeadSource"]').text("Lead Source must not exceed 30 characters");
+                } else {
+                    $('span[data-valmsg-for="LeadSource"]').text("");
+                }
+            });
+
+            $('textarea[name="Address"]').on('input', function () {
+                var address = $(this).val();
+                if (address.length > 30) {
+                    $('span[data-valmsg-for="Address"]').text("Address must not exceed 30 characters");
+                } else {
+                    $('span[data-valmsg-for="Address"]').text("");
+                }
+            });
+
+            $('#referralDropdown').change(function () {
+                var selectedReferralId = $(this).val();
+
+                $.ajax({
+                    url: '/Admin/Lead/GetContactInfo',
+                    type: 'GET',
+                    data: { referralId: selectedReferralId },
+                    success: function (data) {
+                        $('#contactInfoDiv').empty();
+                        $('#contactInfoDiv').append('<div class="form-group"><input type="text" class="form-control mt-1" id="contact1" value="' + data.contact1 + '" readonly></div>');
+                    },
+                    error: function () {
+                        console.log('Error fetching contact info');
+                    }
+                });
+            });
+        });
+    </script>
+}
+
