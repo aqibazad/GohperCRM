@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LegalAndGeneralConsultantCRM.Models.Branches;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace LegalAndGeneralConsultantCRM.Areas.Identity.Data;
@@ -35,6 +35,5 @@ public class LegalAndGeneralConsultantCRMUser : IdentityUser
     public string? EmailOrPhoneNumber { get; set; }
 	public int? SelectedServiceId { get; set; }
 	public DateTime? CreatedAt { get; set; }
-	public int BrandId { get; set; }
-	public Branch Branch { get; set; } // Navigation property
+	
 }

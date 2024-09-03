@@ -41,7 +41,7 @@
           }
         }
       },
-      "CsvHelper/33.0.1": {
+      "CsvHelper/27.2.0": {
         "type": "package",
         "compile": {
           "lib/net6.0/CsvHelper.dll": {
@@ -3078,7 +3078,7 @@
           "System.Runtime.InteropServices": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {
+          "ref/netstandard1.3/System.Globalization.Extensions.dll": {
             "related": ".xml"
           }
         },
@@ -4327,28 +4327,24 @@
         "lib/netstandard2.0/AspNetCore.ReportingServices.pdb"
       ]
     },
-    "CsvHelper/33.0.1": {
-      "sha512": "fev4lynklAU2A9GVMLtwarkwaanjSYB4wUqO2nOJX5hnzObORzUqVLe+bDYCUyIIRQM4o5Bsq3CcyJR89iMmEQ==",
+    "CsvHelper/27.2.0": {
+      "sha512": "TvOda5RWz/KK5MDGIuEE5WxckPCO+cEmws1ZsLas+mSFZJSpHp/v6xl2o72PXr8NcOndKhR7k0wuLYQQ/1R9fQ==",
       "type": "package",
-      "path": "csvhelper/33.0.1",
+      "path": "csvhelper/27.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "csvhelper.33.0.1.nupkg.sha512",
+        "csvhelper.27.2.0.nupkg.sha512",
         "csvhelper.nuspec",
-        "lib/net462/CsvHelper.dll",
-        "lib/net462/CsvHelper.xml",
+        "lib/net45/CsvHelper.dll",
+        "lib/net45/CsvHelper.xml",
         "lib/net47/CsvHelper.dll",
         "lib/net47/CsvHelper.xml",
-        "lib/net48/CsvHelper.dll",
-        "lib/net48/CsvHelper.xml",
+        "lib/net5.0/CsvHelper.dll",
+        "lib/net5.0/CsvHelper.xml",
         "lib/net6.0/CsvHelper.dll",
         "lib/net6.0/CsvHelper.xml",
-        "lib/net7.0/CsvHelper.dll",
-        "lib/net7.0/CsvHelper.xml",
-        "lib/net8.0/CsvHelper.dll",
-        "lib/net8.0/CsvHelper.xml",
         "lib/netstandard2.0/CsvHelper.dll",
         "lib/netstandard2.0/CsvHelper.xml",
         "lib/netstandard2.1/CsvHelper.dll",
@@ -12333,7 +12329,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "AspNetCore.Reporting >= 2.1.0",
-      "CsvHelper >= 33.0.1",
+      "CsvHelper >= 27.2.0",
       "EPPlus >= 7.3.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.23",
       "Microsoft.AspNetCore.Identity.UI >= 6.0.23",
@@ -12342,6 +12338,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.23",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.23",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.16",
+      "System.Globalization.Extensions >= 4.3.0",
       "System.Text.RegularExpressions >= 4.3.1"
     ]
   },
@@ -12396,7 +12393,7 @@
           },
           "CsvHelper": {
             "target": "Package",
-            "version": "[33.0.1, )"
+            "version": "[27.2.0, )"
           },
           "EPPlus": {
             "target": "Package",
@@ -12431,6 +12428,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[6.0.16, )"
+          },
+          "System.Globalization.Extensions": {
+            "target": "Package",
+            "version": "[4.3.0, )"
           },
           "System.Text.RegularExpressions": {
             "target": "Package",

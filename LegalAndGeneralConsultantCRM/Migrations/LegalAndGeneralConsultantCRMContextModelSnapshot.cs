@@ -36,9 +36,6 @@ namespace LegalAndGeneralConsultantCRM.Migrations
                     b.Property<string>("Address2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -145,8 +142,6 @@ namespace LegalAndGeneralConsultantCRM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -190,30 +185,6 @@ namespace LegalAndGeneralConsultantCRM.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ActivityLogs");
-                });
-
-            modelBuilder.Entity("LegalAndGeneralConsultantCRM.Models.Branches.Branch", b =>
-                {
-                    b.Property<int>("BranchId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchId"), 1L, 1);
-
-                    b.Property<string>("BranchCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BranchName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BranchId");
-
-                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("LegalAndGeneralConsultantCRM.Models.CalendarEvents.CalendarEvent", b =>
@@ -1229,8 +1200,11 @@ namespace LegalAndGeneralConsultantCRM.Migrations
 
             modelBuilder.Entity("LegalAndGeneralConsultantCRM.Models.Universiies.UniversityCourse", b =>
                 {
-                    b.Property<int?>("UniversityId")
+                    b.Property<int>("UniversityCourseId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniversityCourseId"), 1L, 1);
 
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
@@ -1238,15 +1212,14 @@ namespace LegalAndGeneralConsultantCRM.Migrations
                     b.Property<decimal?>("TuitionFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UniversityCourseId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("UniversityId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniversityCourseId"), 1L, 1);
-
-                    b.HasKey("UniversityId", "CourseId");
+                    b.HasKey("UniversityCourseId");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("UniversityId");
 
                     b.ToTable("UniversityCourses");
                 });
@@ -1426,17 +1399,6 @@ namespace LegalAndGeneralConsultantCRM.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("LegalAndGeneralConsultantCRM.Areas.Identity.Data.LegalAndGeneralConsultantCRMUser", b =>
-                {
-                    b.HasOne("LegalAndGeneralConsultantCRM.Models.Branches.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("LegalAndGeneralConsultantCRM.Models.ActivitiesLog.ActivityLog", b =>
@@ -1690,15 +1652,11 @@ namespace LegalAndGeneralConsultantCRM.Migrations
                 {
                     b.HasOne("LegalAndGeneralConsultantCRM.Models.Universiies.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("LegalAndGeneralConsultantCRM.Models.Universiies.University", "University")
                         .WithMany("UniversityCourses")
-                        .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UniversityId");
 
                     b.Navigation("Course");
 

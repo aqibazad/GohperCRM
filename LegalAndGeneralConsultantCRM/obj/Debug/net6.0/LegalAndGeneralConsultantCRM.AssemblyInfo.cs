@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LegalAndGeneralConsultantCRM")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cfc1d49d0821961273f569f2d51355d2bc41b678")]
 [assembly: System.Reflection.AssemblyProductAttribute("LegalAndGeneralConsultantCRM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LegalAndGeneralConsultantCRM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

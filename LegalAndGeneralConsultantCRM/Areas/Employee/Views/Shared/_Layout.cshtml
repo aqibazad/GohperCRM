@@ -3,7 +3,7 @@
 @using LegalAndGeneralConsultantCRM.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<LegalAndGeneralConsultantCRMUser> UserManager
-@using LegalAndGeneralConsultantCRM.Models.Branches
+
 @using Microsoft.EntityFrameworkCore
 
 @inject LegalAndGeneralConsultantCRMContext DbContext
@@ -15,18 +15,18 @@
 
 	var user = await UserManager.GetUserAsync(User);
 	 
-	var currentUser = user?.Id;
-	if (user != null && user.BrandId > 0)
-	{
-		var branch = await DbContext.Branches
-			.AsNoTracking() // Optional: Improves performance if you don't need tracking
-			.FirstOrDefaultAsync(b => b.BranchId == user.BrandId);
+	// var currentUser = user?.Id;
+	// if (user != null && user.BrandId > 0)
+	// {
+	// 	var branch = await DbContext.Branches
+	// 		.AsNoTracking() // Optional: Improves performance if you don't need tracking
+	// 		.FirstOrDefaultAsync(b => b.BranchId == user.BrandId);
 
-		if (branch != null)
-		{
-			branchName = branch.BranchName;
-		}
-	}
+	// 	if (branch != null)
+	// 	{
+	// 		branchName = branch.BranchName;
+	// 	}
+	// }
 
 }
 <!DOCTYPE html>
@@ -131,9 +131,9 @@
 										var fullName = a != null ? $"{a.UserName}" : "";  
 										var Name = a != null ? $"{a.Email}" : "";  
 									}
-
+								
 									<p>Welcome, @fullName</p>
-									<p><a onclick ="openGmail()">@Name</a></p>
+									<p><a	style="color:white;" onclick ="openGmail()">@Name</a	style></p>
 								</a>
 							</li>
 						</ul>

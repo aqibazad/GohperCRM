@@ -46,7 +46,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
             }
 
             var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
-            var branches = _context.Branches.ToList();
+           
              var userData = employees.Select(user => new
             {
                 user.Id,
@@ -57,26 +57,13 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
                 user.Email,
                 user.PhoneNumber,
                 user.Gender,
-                BranchName = user.Branch != null ? user.Branch.BranchName : "No Branch"
+                
 
             });
 
             return Json(new { data = userData });
         }
-        public IActionResult EmployeeRegister()
-        {
-            var branches = _context.Branches
-                .Select(b => new
-                {
-                    BranchId = b.BranchId,
-                    BranchName = b.BranchName
-                })
-                .ToList();
-
-            ViewBag.Branches = new SelectList(branches, "BranchId", "BranchName");
-
-            return View();
-        }
+       
 
 
         [HttpPost]
@@ -119,7 +106,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
                 Notes = model.Notes,
                 Department = model.Department,
                 TeamMemeberType = model.TeamMemeberType,
-                BrandId = model.BrandId,
+              
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -184,12 +171,11 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
                 Notes = user.Notes,
                 Department = user.Department,
                 TeamMemeberType = user.TeamMemeberType,
-                BrandId = user.BrandId,
+               
                  
             };
 
-            ViewBag.Branches = new SelectList(_context.Branches, "BranchId", "BranchName", user.BrandId);
-
+           
             return View(model);
         }
 
@@ -223,8 +209,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
             user.Notes = model.Notes;
             user.Department = model.Department;
             user.TeamMemeberType = model.TeamMemeberType;
-            user.BrandId = model.BrandId;
-
+         
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
@@ -238,7 +223,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            ViewBag.Branches = new SelectList(_context.Branches, "BranchId", "BranchName", model.BrandId);
+           
             return View(model);
         }
 

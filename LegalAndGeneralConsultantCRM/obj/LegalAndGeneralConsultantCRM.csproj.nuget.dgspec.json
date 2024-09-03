@@ -52,7 +52,7 @@
             },
             "CsvHelper": {
               "target": "Package",
-              "version": "[33.0.1, )"
+              "version": "[27.2.0, )"
             },
             "EPPlus": {
               "target": "Package",
@@ -87,6 +87,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[6.0.16, )"
+            },
+            "System.Globalization.Extensions": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             },
             "System.Text.RegularExpressions": {
               "target": "Package",

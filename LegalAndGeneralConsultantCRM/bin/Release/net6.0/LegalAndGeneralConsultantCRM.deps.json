@@ -35,7 +35,7 @@
       "LegalAndGeneralConsultantCRM/1.0.0": {
         "dependencies": {
           "AspNetCore.Reporting": "2.1.0",
-          "CsvHelper": "33.0.1",
+          "CsvHelper": "27.2.0",
           "EPPlus": "7.3.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.23",
           "Microsoft.AspNetCore.Identity.UI": "6.0.23",
@@ -44,6 +44,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.23",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.23",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
+          "System.Globalization.Extensions": "4.3.0",
           "System.Text.RegularExpressions": "4.3.1",
           "Microsoft.AspNetCore.Antiforgery": "6.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "6.0.0.0",
@@ -364,11 +365,11 @@
           "lib/netstandard2.0/AspNetCore.ReportingServices.dll": {}
         }
       },
-      "CsvHelper/33.0.1": {
+      "CsvHelper/27.2.0": {
         "runtime": {
           "lib/net6.0/CsvHelper.dll": {
-            "assemblyVersion": "33.0.0.0",
-            "fileVersion": "33.0.1.24"
+            "assemblyVersion": "27.0.0.0",
+            "fileVersion": "27.2.0.0"
           }
         },
         "compile": {
@@ -5182,12 +5183,12 @@
       "path": "aspnetcore.reportingservices/2.1.0",
       "hashPath": "aspnetcore.reportingservices.2.1.0.nupkg.sha512"
     },
-    "CsvHelper/33.0.1": {
+    "CsvHelper/27.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fev4lynklAU2A9GVMLtwarkwaanjSYB4wUqO2nOJX5hnzObORzUqVLe+bDYCUyIIRQM4o5Bsq3CcyJR89iMmEQ==",
-      "path": "csvhelper/33.0.1",
-      "hashPath": "csvhelper.33.0.1.nupkg.sha512"
+      "sha512": "sha512-TvOda5RWz/KK5MDGIuEE5WxckPCO+cEmws1ZsLas+mSFZJSpHp/v6xl2o72PXr8NcOndKhR7k0wuLYQQ/1R9fQ==",
+      "path": "csvhelper/27.2.0",
+      "hashPath": "csvhelper.27.2.0.nupkg.sha512"
     },
     "EPPlus/7.3.0": {
       "type": "package",

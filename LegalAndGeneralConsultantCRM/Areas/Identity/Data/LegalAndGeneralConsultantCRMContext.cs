@@ -13,8 +13,6 @@ using LegalAndGeneralConsultantCRM.Models.VisaApplications;
 using System.Reflection.Emit;
 using LegalAndGeneralConsultantCRM.Models.CalendarEvents;
 using LegalAndGeneralConsultantCRM.Models.ActivitiesLog;
-using LegalAndGeneralConsultantCRM.Models.Branches;
-
 namespace LegalAndGeneralConsultantCRM.Areas.Identity.Data;
 
 public class LegalAndGeneralConsultantCRMContext : IdentityDbContext<LegalAndGeneralConsultantCRMUser>
@@ -51,8 +49,7 @@ public class LegalAndGeneralConsultantCRMContext : IdentityDbContext<LegalAndGen
     public DbSet<CalendarEvent> CalendarEvents { get; set; }
     public DbSet<LeadHistory> LeadHistories { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
-    public DbSet<Branch> Branches { get; set; }
-    public DbSet<Consultationfee>  Consultationfees { get; set; }
+       public DbSet<Consultationfee>  Consultationfees { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -101,12 +98,6 @@ public class LegalAndGeneralConsultantCRMContext : IdentityDbContext<LegalAndGen
                 .Property(uc => uc.TuitionFee)
                 .HasColumnType("decimal(18,2)");
 
-        modelBuilder.Entity<UniversityCourse>()
-                .HasKey(uc => new { uc.UniversityId, uc.CourseId });
-        modelBuilder.Entity<LegalAndGeneralConsultantCRMUser>()
-                .HasOne(u => u.Branch)
-                .WithMany() // If Branch has a collection of users, use .WithMany(b => b.Users)
-                .HasForeignKey(u => u.BrandId)
-                .OnDelete(DeleteBehavior.Restrict);
+       
     }
 }

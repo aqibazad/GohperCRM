@@ -133,9 +133,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Admin.Controllers
 			var studentCount = await _dbContext.Students.CountAsync();
 			ViewBag.StudentCount = studentCount;
 
-			var branchCount = await _dbContext.Branches.CountAsync();
-			ViewBag.BranchCount = branchCount;
-
+			
 			var allocatedLeadsCount = await _dbContext.Leads
 				.Where(lead => lead.IsLeadAssign == false)
 				.CountAsync();

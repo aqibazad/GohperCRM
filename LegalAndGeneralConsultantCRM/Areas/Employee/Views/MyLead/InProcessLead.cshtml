@@ -1,20 +1,54 @@
 ﻿<head>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
-    .country-code {
-        width: 120px; /* Adjust width as needed */
-    }
-    .phone-number {
-        flex: 1; /* Takes up the remaining space */
-    }
-</style>
+        .country-code {
+            width: 120px; /* Adjust width as needed */
+        }
+
+        .phone-number {
+            flex: 1; /* Takes up the remaining space */
+        }
+
+        .icon-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 60px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the icon */
+            left: 50%;
+            margin-left: -30px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .icon-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+    </style>
 </head>
 <div class="content-wrapper">
     <div class="content-wrapper-before"></div>
     <div class="container-full">
-       
+
         <!-- Main content -->
         <section class="content">
             <!-- Content Header (Page header) -->
@@ -38,7 +72,7 @@
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">My Leads </h3>
-                             <div class="float-right">
+                            <div class="float-right">
                                 <a href="#" data-toggle="modal" data-target="#add-new-events" class="btn btn-primary btn-block my-10">
                                     <i class="ti-plus"></i> Add New Lead
                                 </a>
@@ -60,7 +94,7 @@
                                             <th style="background-color: #4e0973;color:white;">Phone Number</th>
                                             <th style="background-color: #4e0973;color:white;">City</th>
                                             <th style="background-color: #4e0973;color:white;">Status</th>
-                                           
+
                                             <th style="background-color: #4e0973;color:white;">Follow-Ups</th>
                                         </tr>
                                     </thead>
@@ -73,7 +107,7 @@
                     </div>
                 </div>
             </div>
-   
+
         </section>
 
     </div>
@@ -114,85 +148,16 @@
                         </div>
                     </div>
                     <div class="row">
-           <div class="col-md-6">
-            <label class="control-label">Phone Number</label>
-            <div class="input-group">
-               <select id="phoneCountryCode1" class="form-control" name="PhoneCountryCode1">
-    <option value="+1">+1 (United States)</option>
-    <option value="+44">+44 (United Kingdom)</option>
-    <option value="+91">+91 (India)</option>
-    <option value="+33">+33 (France)</option>
-    <option value="+49">+49 (Germany)</option>
-    <option value="+81">+81 (Japan)</option>
-    <option value="+61">+61 (Australia)</option>
-    <option value="+55">+55 (Brazil)</option>
-    <option value="+86">+86 (China)</option>
-    <option value="+27">+27 (South Africa)</option>
-    <option value="+7">+7 (Russia)</option>
-    <option value="+39">+39 (Italy)</option>
-    <option value="+34">+34 (Spain)</option>
-    <option value="+21">+21 (Argentina)</option>
-    <option value="+82">+82 (South Korea)</option>
-    <option value="+66">+66 (Thailand)</option>
-    <option value="+60">+60 (Malaysia)</option>
-    <option value="+23">+23 (Mexico)</option>
-    <option value="+92">+92 (Pakistan)</option>
-    <option value="+91">+91 (India)</option>
-    <option value="+964">+964 (Iraq)</option>
-    <option value="+971">+971 (United Arab Emirates)</option>
-    <option value="+256">+256 (Uganda)</option>
-    <option value="+27">+27 (South Africa)</option>
-    <option value="+233">+233 (Ghana)</option>
-    <option value="+90">+90 (Turkey)</option>
-    <option value="+56">+56 (Chile)</option>
-    <option value="+52">+52 (Mexico)</option>
-    <option value="+47">+47 (Norway)</option>
-    <option value="+48">+48 (Poland)</option>
-    <option value="+32">+32 (Belgium)</option>
-    <option value="+31">+31 (Netherlands)</option>
-</select>
-
-                <input class="form-control form-white" placeholder="Enter phone number" type="text" name="PhoneNumber" id="phoneNumber" required/>
-            </div>
-        </div>
-       <div class="col-md-6">
-    <label class="control-label">Phone Number 2</label>
-    <div class="input-group">
-        <select id="phoneCountryCode2" class="form-control country-code" name="PhoneCountryCode1">
-            <option value="+1">+1 (United States)</option>
-            <option value="+44">+44 (United Kingdom)</option>
-            <option value="+91">+91 (India)</option>
-            <option value="+33">+33 (France)</option>
-            <option value="+49">+49 (Germany)</option>
-            <option value="+81">+81 (Japan)</option>
-            <option value="+61">+61 (Australia)</option>
-            <option value="+55">+55 (Brazil)</option>
-            <option value="+86">+86 (China)</option>
-            <option value="+27">+27 (South Africa)</option>
-            <option value="+7">+7 (Russia)</option>
-            <option value="+39">+39 (Italy)</option>
-            <option value="+34">+34 (Spain)</option>
-            <option value="+21">+21 (Argentina)</option>
-            <option value="+82">+82 (South Korea)</option>
-            <option value="+66">+66 (Thailand)</option>
-            <option value="+60">+60 (Malaysia)</option>
-            <option value="+23">+23 (Mexico)</option>
-            <option value="+92">+92 (Pakistan)</option>
-            <option value="+964">+964 (Iraq)</option>
-            <option value="+971">+971 (United Arab Emirates)</option>
-            <option value="+256">+256 (Uganda)</option>
-            <option value="+233">+233 (Ghana)</option>
-            <option value="+90">+90 (Turkey)</option>
-            <option value="+56">+56 (Chile)</option>
-            <option value="+52">+52 (Mexico)</option>
-            <option value="+47">+47 (Norway)</option>
-            <option value="+48">+48 (Poland)</option>
-            <option value="+32">+32 (Belgium)</option>
-            <option value="+31">+31 (Netherlands)</option>
-        </select>
-        <input id="phoneNumber2" class="form-control phone-number form-white" placeholder="Enter second phone number" type="text" name="PhoneNumber2" />
-    </div>
-</div>
+                        <div class="col-md-6">
+                            <label class="control-label">Phone Number</label>
+                            <br />
+                            <input id="phoneNumber" class="form-control form-white" placeholder="Enter phone number" type="text" name="PhoneNumber" style="padding-right:124px;" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">Phone Number 2</label>
+                            <br />
+                            <input id="phoneNumber2" class="form-control form-white" placeholder="Enter phone Number 2" type="text" name="PhoneNumber2" style="padding-right:124px;" />
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -221,13 +186,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <h2 >Address</h2>
-                                 </div>
+                                <h2>Address</h2>
+                            </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6" style="display:none;">
                             <label>Suit Number/Apt Number</label>
                             <input type="text" class="form-control" name="Apt" id="apt" placeholder="Apartment Number">
                         </div>
@@ -258,30 +223,94 @@
                             <input type="text" class="form-control" name="ZipCode" id="zipCode" placeholder="Zip Code">
                         </div>
                     </div>
-            <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveLeadBtn">Save</button>
-                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveLeadBtn">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </form>
-            </div>
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
     <script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        var phoneCountryCode1 = document.getElementById('phoneCountryCode1').value;
-        var phoneNumber1 = document.getElementById('phoneNumber').value;
-        document.getElementById('phoneNumber').name = 'PhoneNumber'; // Ensure name is set
+        document.addEventListener("DOMContentLoaded", function () {
+            var input1 = document.querySelector("#phoneNumber");
+            var input2 = document.querySelector("#phoneNumber2");
 
-        var phoneCountryCode2 = document.getElementById('phoneCountryCode2').value;
-        var phoneNumber2 = document.getElementById('phoneNumber2').value;
-        document.getElementById('phoneNumber2').name = 'PhoneNumber2'; // Ensure name is set
+            // Initialize intlTelInput for Phone Number 1
+            var iti1 = window.intlTelInput(input1, {
+                initialCountry: "in",
+                separateDialCode: true,
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            });
 
-        // Combine country code with phone number
-        document.getElementById('phoneNumber').value = phoneCountryCode1 + phoneNumber1;
-        document.getElementById('phoneNumber2').value = phoneCountryCode2 + phoneNumber2;
-    });
-</script>
+            // Initialize intlTelInput for Phone Number 2
+            var iti2 = window.intlTelInput(input2, {
+                initialCountry: "in",
+                separateDialCode: true,
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            });
 
+            // Update hidden fields with the full phone number before form submission
+            document.querySelector("#saveLeadBtn").addEventListener("click", function (e) {
+                var fullPhoneNumber1 = iti1.getNumber();
+                var fullPhoneNumber2 = iti2.getNumber();
+
+                document.querySelector("#fullPhoneNumber").value = fullPhoneNumber1;
+                document.querySelector("#fullPhoneNumber2").value = fullPhoneNumber2;
+            });
+
+            // Real-time validation for phone number 1
+            document.querySelector("#phoneNumber").addEventListener("blur", function () {
+                var phoneNumber = iti1.getNumber();
+                validatePhoneNumber(phoneNumber);
+            });
+
+            // Real-time validation for phone number 2
+            document.querySelector("#phoneNumber2").addEventListener("blur", function () {
+                var phoneNumber2 = iti2.getNumber();
+                validatePhoneNumber(phoneNumber2);
+            });
+
+            function validatePhoneNumber(phoneNumber) {
+                $.ajax({
+                    url: '/Admin/Lead/CheckPhoneNumber',
+                    type: 'GET',
+                    data: { phoneNumber: phoneNumber },
+                    success: function (data) {
+                        if (data.exists) {
+                            alert("This lead already exists.");
+                        }
+                    },
+                    error: function () {
+                        console.log('Error checking phone number');
+                    }
+                });
+            }
+
+            // Real-time validation for First Name
+            document.querySelector("#firstName").addEventListener("input", function () {
+                var firstName = this.value;
+                if (!/^[A-Za-z]*$/.test(firstName)) {
+                    alert("First Name should only contain alphabets.");
+                    this.value = firstName.replace(/[^A-Za-z]/g, '');
+                }
+            });
+
+            // Real-time validation for Last Name
+            document.querySelector("#lastName").addEventListener("input", function () {
+                var lastName = this.value;
+                if (!/^[A-Za-z]*$/.test(lastName)) {
+                    alert("Last Name should only contain alphabets.");
+                    this.value = lastName.replace(/[^A-Za-z]/g, '');
+                }
+            });
+
+        });
+    </script>
+
+</div>
 
 <div class="modal fade" id="editLeadModal" tabindex="-1" aria-labelledby="editLeadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -342,7 +371,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>City</label>
-                                <input type="text" class="form-control" name="city" id="city" placeholder="City"  >
+                                <input type="text" class="form-control" name="city" id="city" placeholder="City">
 
                             </div>
                         </div>
@@ -401,13 +430,11 @@
                         }
                     }
                 },
-               
+
                 {
                     "data": "leadId",
                     "render": function (data, type, row) {
                         return '' +
-                           
-
                             '<a class="edit-lead btn btn-link me-5 text-primary" ' +
                             'data-leadid="' + row.leadId + '" ' +
                             'data-firstname="' + row.firstName + '" ' +
@@ -419,44 +446,51 @@
                             'data-city="' + row.city + '" ' +
                             'data-notes="' + row.notes + '" ' +
                             'style="cursor: pointer;">' +
-                            '<i class="bi bi-pencil"></i></a> ' +
+                            '<span class="icon-container">' +
+                            '<i class="bi bi-pencil"></i>' +
+                            '<span class="tooltip-text">Edit</span>' +
+                            '</span></a> ' +
 
                             '<a class="delete-lead btn btn-link me-5 text-danger" ' +
                             'data-leadid="' + row.leadId + '" ' +
                             'style="cursor: pointer;">' +
-                            '<i class="bi bi-trash"></i></a>' +
-                   '<a href="/Employee/MyLead/HistoryLead?leadId=' + row.leadId + '" ' +
-            'class="btn btn-link text-info">' +
-            '<i class="bi bi-clock"></i> View History</a>';;
+                            '<span class="icon-container">' +
+                            '<i class="bi bi-trash"></i>' +
+                            '<span class="tooltip-text">Delete</span>' +
+                            '</span></a>' +
+
+                            '<a href="/Employee/MyLead/HistoryLead?leadId=' + row.leadId + '" ' +
+                            'class="btn btn-link text-info">' +
+                            '<i class="bi bi-clock"></i> View History</a>';
                     }
                 }
 
 
             ]
         });
-          $('#leadSource').change(function() {
-      if ($(this).val() === 'Other') {
-        $('#show').show();
-      } else {
-        $('#show').hide();
-      }
-    });
-    $('#leadTable').on('click', '.view-history', function() {
-    var leadId = $(this).data('leadid');
-   console.log('Lead ID:', leadId); // Add this line to check if leadId is correct
+        $('#leadSource').change(function () {
+            if ($(this).val() === 'Other') {
+                $('#show').show();
+            } else {
+                $('#show').hide();
+            }
+        });
+        $('#leadTable').on('click', '.view-history', function () {
+            var leadId = $(this).data('leadid');
+            console.log('Lead ID:', leadId); // Add this line to check if leadId is correct
 
-    $.ajax({
-        url: '/Employee/MyLead/HistoryLead',
-        type: 'Post',
-        data: { leadId: leadId },
-        success: function(response) {
-            // Handle success
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', error);
-        }
-    });
-    });
+            $.ajax({
+                url: '/Employee/MyLead/HistoryLead',
+                type: 'Post',
+                data: { leadId: leadId },
+                success: function (response) {
+                    // Handle success
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        });
         // Save lead button click event
         $('#saveLeadBtn').on('click', function () {
             // Clear previous validation errors
@@ -532,7 +566,7 @@
                 $('#email').after('<span class="validation-error text-danger">Invalid email format.</span>');
             }
             // Validate Phone Number
-          
+
             // Validate Phone Number
             if ($('#gender').val().trim() === '') {
                 isValid = false;
@@ -559,10 +593,10 @@
                         $('#add-new-events').modal('hide');
                         $('#leadTable').DataTable().ajax.reload(); // Reload the data table
                     } else {
-                           
-                    // Show error message if not successful
-                    alert(response.message);
-        
+
+                        // Show error message if not successful
+                        alert(response.message);
+
                     }
                 },
                 error: function (error) {
@@ -701,7 +735,7 @@
             var lastName = $('#editLastName').val().trim();
             var email = $('#editEmail').val().trim();
             var gender = $('#editGender').val().trim();
-           
+
             var leadSource = $('#editLeadSource').val().trim();
 
             // Remove any existing validation errors
@@ -741,7 +775,7 @@
                 $('#editEmail').after('<span class="validation-error text-danger">Invalid email format.</span>');
             }
 
-            
+
 
             // Validate Gender
             if (gender === '') {

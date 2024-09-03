@@ -58,264 +58,155 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> UploadData(IFormFile file, List<MappingViewModel> mappings, string dropdownValue)
-        {
-            try
-            {
-                OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial; // For non-commercial use
-                                                                                                        // Check if a file was provided
-                if (file == null || file.Length == 0)
-                {
-                    ViewBag.FileError = "Please select a file.";
-                    return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
-                }
+		[HttpPost]
+		public async Task<IActionResult> UploadData(IFormFile file, List<MappingViewModel> mappings, string dropdownValue)
+		{
+			try
+			{
+				var user = await _userManager.GetUserAsync(User);
+				var currentUser = user.Id;
 
-                // Process the uploaded file
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-                    stream.Position = 0;
+				if (currentUser == null)
+				{
+					return Json(new { data = new List<object>() });
+				}
+				ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
-                    // Load the Excel package
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets.First();
-                        var rowCount = worksheet.Dimension.Rows;
-                       
-                        // Check if dropdownValue is "meta"
-                        if (dropdownValue == "meta")
-                        {
+				// Check if a file was provided
+				if (file == null || file.Length == 0)
+				{
+					ViewBag.FileError = "Please select a file.";
+					return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
+				}
 
+				// Process the uploaded file
+				using (var stream = new MemoryStream())
+				{
+					await file.CopyToAsync(stream);
+					stream.Position = 0;
 
-                            for (int row = 2; row <= rowCount; row++)
-                            {
-                                var lead = new Lead();
+					// Load the Excel package
+					using (var package = new ExcelPackage(stream))
+					{
+						var worksheet = package.Workbook.Worksheets.First();
+						var rowCount = worksheet.Dimension.Rows;
+						
+						// List to store leads before saving in bulk
+						var leadsToSave = new List<Lead>();
 
-                                // Iterate through the mappings to extract data from corresponding columns
-                                foreach (var mapping in mappings)
-                                {
+						for (int row = 2; row <= rowCount; row++)
+						{
+							var lead = new Lead();
 
-                                    // Find the column index based on the mapping
-                                    var columnIndex = worksheet.Cells["1:1"].First(cell => cell.Value.ToString().Equals(mapping.ExcelColumn)).Start.Column;
-                                    var value = worksheet.Cells[row, columnIndex].Value?.ToString();
-                                    var sourceId = worksheet.Cells[row, 1].Value?.ToString(); // Assuming SourceId is in the first column
+							// Iterate through the mappings to extract data from corresponding columns
+							foreach (var mapping in mappings)
+							{
+								// Find the column index based on the mapping
+								var columnIndex = worksheet.Cells["1:1"].First(cell => cell.Value.ToString().Equals(mapping.ExcelColumn)).Start.Column;
+								var value = worksheet.Cells[row, columnIndex].Value?.ToString();
+								var sourceId = worksheet.Cells[row, 1].Value?.ToString(); // Assuming SourceId is in the first column
 
-                                    // Map the value to the corresponding property of the Lead model
-                                    if (!string.IsNullOrEmpty(value))
-                                    {
-                                        // Set the SourceId and UserId
-                                        lead.LeadSource = sourceId;
-                                 
-                                        switch (mapping.DbColumn)
-                                        {
-                                            case "FirstName":
-                                                lead.FirstName = value;
-                                                break;
-                                            case "LastName":
-                                                lead.LastName = value;
-                                                break;
-                                            case "PhoneNumber":
-                                                // Check if value is not null or empty
-                                                if (!string.IsNullOrEmpty(value))
-                                                {
-                                                    // Trim any leading or trailing whitespace
-                                                    value = value.Trim();
-                                                    // Assign the value to the PhoneNumber property
-                                                    lead.PhoneNumber = value;
-                                                }
-                                                break;
-                                            case "Gender":
-                                                lead.Gender = value;
-                                                break;
-                                            case "CompanyName":
-                                                lead.CompanyName = value;
-                                                break;
-                                            case "JobTitle":
-                                                lead.JobTitle = value;
-                                                break;
-                                            case "Email":
-                                                lead.Email = value;
-                                                break;
-                                            case "CreatedDate":
-                                                // You may want to handle the CreatedDate separately
-                                                break;
-                                            case "Address":
-                                                lead.Address = value;
-                                                break;
-                                            case "City":
-                                                lead.City = value;
-                                                break;
-                                        
-                                           
-                                            case "State":
-                                                lead.State = value;
-                                                break;
-                                            case "ZipCode":
-                                                lead.ZipCode = value;
-                                                break;
-                                            case "Country":
-                                                lead.Country = value;
-                                                break;
-                                            case "Notes":
-                                                lead.Notes = value;
-                                                break;
-                                            case "Industry":
-                                                lead.Industry = value;
-                                                break;
+								// Map the value to the corresponding property of the Lead model
+								if (!string.IsNullOrEmpty(value))
+								{
+                                    // Set the SourceId and UserId
 
-                                            case "LeadSourceDetails":
-                                                lead.LeadSourceDetails = value;
-                                                break;
-                                          
-                                         
-                                          
-                                            case "ReferralId":
-                                                lead.ReferralId = int.Parse(value); // Assuming ReferralId is an integer
-                                                break;
-                                           
-                                            default:
-                                                // Handle unknown DbColumn values or add custom logic
-                                                break;
-                                        }
-                                    }
-                                }
+                                    lead.UserId = currentUser;
+									switch (mapping.DbColumn)
+									{
+										case "FirstName":
+											lead.FirstName = value;
+											break;
+										case "LastName":
+											lead.LastName = value;
+											break;
+										case "PhoneNumber":
+											if (!string.IsNullOrEmpty(value))
+											{
+												value = value.Trim();
+												lead.PhoneNumber = value;
+											}
+											break;
+										case "Gender":
+											lead.Gender = value;
+											break;
+										case "CompanyName":
+											lead.CompanyName = value;
+											break;
+										case "JobTitle":
+											lead.JobTitle = value;
+											break;
+										case "Email":
+											lead.Email = value;
+											break;
+										case "Address":
+											lead.Address = value;
+											break;
+										case "City":
+											lead.City = value;
+											break;
+									
+										case "State":
+											lead.State = value;
+											break;
+										case "ZipCode":
+											lead.ZipCode = value;
+											break;
+										case "Country":
+											lead.Country = value;
+											break;
+										case "Notes":
+											lead.Notes = value;
+											break;
+										case "Industry":
+											lead.Industry = value;
+											break;
+										case "LeadSourceDetails":
+											lead.LeadSourceDetails = value;
+											break;
+									
+									
+									
+										
+									}
+								}
+							}
 
-                                // Add the lead to the context for saving
-                                _context.Leads.Add(lead);
-                                // Save changes to the database
-                                await _context.SaveChangesAsync();
-                                return RedirectToAction("AllLead");
+							// Add the lead to the batch list for saving
+							leadsToSave.Add(lead);
 
-                            }
-                        }
-                        else
-                        {
-                            // Store all values from the first column in SourceId
+							// Save the batch when it reaches a certain size (e.g., every 100 records)
+							if (leadsToSave.Count >= 100)
+							{
+								_context.Leads.AddRange(leadsToSave);
+								await _context.SaveChangesAsync();
+								leadsToSave.Clear(); // Clear the list after saving
+							}
+						}
 
-                            for (int row = 2; row <= rowCount; row++)
-                            {
-                                var lead = new Lead();
+						// Save any remaining leads
+						if (leadsToSave.Any())
+						{
+							_context.Leads.AddRange(leadsToSave);
+							await _context.SaveChangesAsync();
+						}
 
-                                // Iterate through the mappings to extract data from corresponding columns
-                                foreach (var mapping in mappings)
-                                {
-                                    // Find the column index based on the mapping
-                                    var columnIndex = worksheet.Cells["1:1"].First(cell => cell.Value.ToString().Equals(mapping.ExcelColumn)).Start.Column;
-                                    var value = worksheet.Cells[row, columnIndex].Value?.ToString();
-                                    var sourceId = worksheet.Cells[row, 1].Value?.ToString(); // Assuming SourceId is in the first column
+						return RedirectToAction("AllLead");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				// Log the exception for debugging purposes
+				Console.WriteLine("Error occurred: " + ex.Message);
 
-                                    // Map the value to the corresponding property of the Lead model
-                                    if (!string.IsNullOrEmpty(value))
-                                    {
-                                        // Set the SourceId and UserId
-                                        lead.LeadSource = sourceId;
-                                       
-                                        switch (mapping.DbColumn)
-                                        {
-                                            case "FirstName":
-                                                lead.FirstName = value;
-                                                break;
-                                            case "LastName":
-                                                lead.LastName = value;
-                                                break;
-                                            case "PhoneNumber":
-                                                // Check if value is not null or empty
-                                                if (!string.IsNullOrEmpty(value))
-                                                {
-                                                    // Trim any leading or trailing whitespace
-                                                    value = value.Trim();
-                                                    // Assign the value to the PhoneNumber property
-                                                    lead.PhoneNumber = value;
-                                                }
-                                                break;
-                                            case "Gender":
-                                                lead.Gender = value;
-                                                break;
-                                            case "CompanyName":
-                                                lead.CompanyName = value;
-                                                break;
-                                            case "JobTitle":
-                                                lead.JobTitle = value;
-                                                break;
-                                            case "Email":
-                                                lead.Email = value;
-                                                break;
-                                            case "CreatedDate":
-                                                // You may want to handle the CreatedDate separately
-                                                break;
-                                            case "Address":
-                                                lead.Address = value;
-                                                break;
-                                            case "City":
-                                                lead.City = value;
-                                                break;
-                                          
-                                            case "State":
-                                                lead.State = value;
-                                                break;
-                                            case "ZipCode":
-                                                lead.ZipCode = value;
-                                                break;
-                                            case "Country":
-                                                lead.Country = value;
-                                                break;
-                                            case "Notes":
-                                                lead.Notes = value;
-                                                break;
-                                            case "Industry":
-                                                lead.Industry = value;
-                                                break;
-
-                                            case "LeadSourceDetails":
-                                                lead.LeadSourceDetails = value;
-                                                break;
-                                            
-                                           
-                                            case "ReferralId":
-                                                lead.ReferralId = int.Parse(value); // Assuming ReferralId is an integer
-                                                break;
-                                          
-                                            default:
-                                                // Handle unknown DbColumn values or add custom logic
-                                                break;
-                                        }
-                                    }
-                                }
-
-                                // Add the lead to the context for saving
-                                _context.Leads.Add(lead);
-                                // Save changes to the database
-                                await _context.SaveChangesAsync();
-                                return RedirectToAction("AllLead");
-                            }
-                        }
-
-                        
-
-
-                    }
-                   
-
-                }
-
-                return RedirectToAction("AllLead");
-
-
-            }
-            catch (Exception ex)
-            {
-                // Log the exception for debugging purposes
-                Console.WriteLine("Error occurred: " + ex.Message);
-
-                // Display a generic error message to the user
-                ViewBag.ErrorMessage = "An error occurred while uploading data. Please try again.";
-                return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
-            }
-        }
-
-        // Helper method to get the column index based on header name
-        private int GetColumnIndex(ExcelWorksheet worksheet, string columnName)
+				// Display a generic error message to the user
+				ViewBag.ErrorMessage = "An error occurred while uploading data. Please try again.";
+				return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
+			}
+		}
+		// Helper method to get the column index based on header name
+		private int GetColumnIndex(ExcelWorksheet worksheet, string columnName)
         {
             var colCount = worksheet.Dimension?.Columns ?? 0;
             for (int col = 1; col <= colCount; col++)
@@ -393,13 +284,8 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
             var excludedStatuses = new List<string> { "Dead Lead", "Converted Lead" };
 
             var allocatedLeads = _context.Leads
-                      .Where(lead => lead.IsLeadAssign == true &&
-                                     lead.Assignees.Any(assignee => assignee.EmployeeId == currentUser) &&
-                                     (lead.FollowUps.Any(followUp => followUp.Status == null) ||
-                                     !lead.FollowUps.Any(followUp => excludedStatuses.Contains(followUp.Status))))
-                      .Include(l => l.Referral)
-                      .Include(l => l.Assignees).ThenInclude(lae => lae.Employee)
-                      .Include(l => l.FollowUps)
+                      .Where(lead => lead.UserId == currentUser)
+                      
                       .ToList();
 
 
@@ -416,10 +302,7 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
                 l.City,
                 l.Notes,
                 CreatedDate = l.CreatedDate?.Date,
-                ReferralName = l.Referral != null ? l.Referral.Name : null,
-                EmployeeFirstName = l.Assignees.FirstOrDefault()?.Employee?.FirstName,
-                FollowUpStatus = l.FollowUps.FirstOrDefault()?.Status,
-                FollowUpDate = l.FollowUps.FirstOrDefault()?.FollowUpDate
+                
             });
 
             return Json(new { data = leadData });
