@@ -1,5 +1,6 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "WorkspaceRootPath": "C:\\Users\\AL Shahbaz\\source\\repos\\GohperCRM\\",
   "Documents": [
     {
@@ -54,6 +55,17 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\AL Shahbaz\\AppData\\Local\\SourceServer\\372335e1ddd97e3a89e415e7cdc8cbda8c78b3ebbb05048be5ceeee972b87840\\LegalAndGeneralConsultantCRM\\Areas\\Identity\\Data\\LegalAndGeneralConsultantCRMUser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+  "WorkspaceRootPath": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{173E9EDB-AE52-4135-B16C-0328CDA87474}|LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj|c:\\users\\sohail khan\\source\\repos\\gohpercrm\\legalandgeneralconsultantcrm\\areas\\employee\\views\\mylead\\inprocesslead.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{173E9EDB-AE52-4135-B16C-0328CDA87474}|LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj|solutionrelative:legalandgeneralconsultantcrm\\areas\\employee\\views\\mylead\\inprocesslead.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{173E9EDB-AE52-4135-B16C-0328CDA87474}|LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj|c:\\users\\sohail khan\\source\\repos\\gohpercrm\\legalandgeneralconsultantcrm\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{173E9EDB-AE52-4135-B16C-0328CDA87474}|LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj|solutionrelative:legalandgeneralconsultantcrm\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+>>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
     }
   ],
   "DocumentGroupContainers": [
@@ -63,7 +75,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 17,
+=======
+          "SelectedChildIndex": 4,
+>>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
           "Children": [
             {
               "$type": "Bookmark",
@@ -83,6 +99,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 3,
               "Title": "InProcessLead.cshtml",
               "DocumentMoniker": "C:\\Users\\AL Shahbaz\\Documents\\ByteTechAllCRMS\\old\\American_CRM\\LegalGeneral\\LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\InProcessLead.cshtml",
@@ -224,10 +241,23 @@
               "ViewState": "AgIAAB8BAAAAAAAAAAAAADABAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-02T21:46:43.817Z"
+=======
+              "DocumentIndex": 0,
+              "Title": "InProcessLead.cshtml",
+              "DocumentMoniker": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\InProcessLead.cshtml",
+              "RelativeDocumentMoniker": "LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\InProcessLead.cshtml",
+              "ToolTip": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\InProcessLead.cshtml",
+              "RelativeToolTip": "LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\InProcessLead.cshtml",
+              "ViewState": "AQIAAAUDAAAAYGZmZuYswL8BAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-02T09:33:35.7Z",
+              "EditorCaption": ""
+>>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+<<<<<<< HEAD
               "Title": "BulkUpload.cshtml",
               "DocumentMoniker": "C:\\Users\\AL Shahbaz\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\BulkUpload.cshtml",
               "RelativeDocumentMoniker": "LegalAndGeneralConsultantCRM\\Areas\\Employee\\Views\\MyLead\\BulkUpload.cshtml",
@@ -249,6 +279,16 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-09-02T21:27:51.042Z",
               "EditorCaption": ""
+=======
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\appsettings.json",
+              "RelativeDocumentMoniker": "LegalAndGeneralConsultantCRM\\appsettings.json",
+              "ToolTip": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\appsettings.json",
+              "RelativeToolTip": "LegalAndGeneralConsultantCRM\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-09-02T09:29:05.479Z"
+>>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
             }
           ]
         },

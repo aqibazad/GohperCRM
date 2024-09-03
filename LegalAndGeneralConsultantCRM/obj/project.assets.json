@@ -12343,19 +12343,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AL Shahbaz\\.nuget\\packages\\": {}
+    "C:\\Users\\Sohail Khan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AL Shahbaz\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
+      "projectUniqueName": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
       "projectName": "LegalAndGeneralConsultantCRM",
-      "projectPath": "C:\\Users\\AL Shahbaz\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
-      "packagesPath": "C:\\Users\\AL Shahbaz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AL Shahbaz\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\obj\\",
+      "projectPath": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
+      "packagesPath": "C:\\Users\\Sohail Khan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\AL Shahbaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sohail Khan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12457,7 +12457,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }
