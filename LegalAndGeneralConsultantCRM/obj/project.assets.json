@@ -12348,9 +12348,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
+      "projectUniqueName": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
       "projectName": "LegalAndGeneralConsultantCRM",
-      "projectPath": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
+      "projectPath": "C:\\Users\\Sohail Khan\\source\\repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\LegalAndGeneralConsultantCRM.csproj",
       "packagesPath": "C:\\Users\\Sohail Khan\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Sohail Khan\\Source\\Repos\\GohperCRM\\LegalAndGeneralConsultantCRM\\obj\\",
       "projectStyle": "PackageReference",

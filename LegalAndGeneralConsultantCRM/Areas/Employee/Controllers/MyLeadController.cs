@@ -43,6 +43,9 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
 				.Select(h => new LeadHistoryViewModel
 				{
 					LeadHistoryId = h.LeadHistoryId,
+					FullName = h.Lead.FirstName,
+					Email = h.Lead.Email,
+					PhoneNumber = h.Lead.PhoneNumber,
 					LeadId = h.LeadId,
 					UserName = h.User != null ? h.User.UserName : "Unknown", // Adjust as per User property
 					Status = h.Status,
@@ -57,156 +60,101 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadData(IFormFile file, List<MappingViewModel> mappings, string dropdownValue)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var currentUser = user?.Id;
 
-		[HttpPost]
-		public async Task<IActionResult> UploadData(IFormFile file, List<MappingViewModel> mappings, string dropdownValue)
-		{
-			try
-			{
-				var user = await _userManager.GetUserAsync(User);
-				var currentUser = user.Id;
+                if (string.IsNullOrEmpty(currentUser))
+                {
+                    return Json(new { data = new List<object>() });
+                }
 
-				if (currentUser == null)
-				{
-					return Json(new { data = new List<object>() });
-				}
-				ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
-				// Check if a file was provided
-				if (file == null || file.Length == 0)
-				{
-					ViewBag.FileError = "Please select a file.";
-					return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
-				}
+                if (file == null || file.Length == 0)
+                {
+                    ViewBag.FileError = "Please select a file.";
+                    return View("BulkUpload");
+                }
 
-				// Process the uploaded file
-				using (var stream = new MemoryStream())
-				{
-					await file.CopyToAsync(stream);
-					stream.Position = 0;
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
 
-					// Load the Excel package
-					using (var package = new ExcelPackage(stream))
-					{
-						var worksheet = package.Workbook.Worksheets.First();
-						var rowCount = worksheet.Dimension.Rows;
-						
-						// List to store leads before saving in bulk
-						var leadsToSave = new List<Lead>();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.First();
+                        var rowCount = worksheet.Dimension.Rows;
 
-						for (int row = 2; row <= rowCount; row++)
-						{
-							var lead = new Lead();
+                        var leadsToSave = new List<Lead>();
 
-							// Iterate through the mappings to extract data from corresponding columns
-							foreach (var mapping in mappings)
-							{
-								// Find the column index based on the mapping
-								var columnIndex = worksheet.Cells["1:1"].First(cell => cell.Value.ToString().Equals(mapping.ExcelColumn)).Start.Column;
-								var value = worksheet.Cells[row, columnIndex].Value?.ToString();
-								var sourceId = worksheet.Cells[row, 1].Value?.ToString(); // Assuming SourceId is in the first column
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var lead = new Lead { UserId = currentUser };
 
-								// Map the value to the corresponding property of the Lead model
-								if (!string.IsNullOrEmpty(value))
-								{
-                                    // Set the SourceId and UserId
+                            foreach (var mapping in mappings)
+                            {
+                                var columnIndex = worksheet.Cells["1:1"]
+                                                    .First(cell => cell.Value.ToString().Equals(mapping.ExcelColumn))
+                                                    .Start.Column;
+                                var value = worksheet.Cells[row, columnIndex].Value?.ToString();
 
-                                    lead.UserId = currentUser;
-									switch (mapping.DbColumn)
-									{
-										case "FirstName":
-											lead.FirstName = value;
-											break;
-										case "LastName":
-											lead.LastName = value;
-											break;
-										case "PhoneNumber":
-											if (!string.IsNullOrEmpty(value))
-											{
-												value = value.Trim();
-												lead.PhoneNumber = value;
-											}
-											break;
-										case "Gender":
-											lead.Gender = value;
-											break;
-										case "CompanyName":
-											lead.CompanyName = value;
-											break;
-										case "JobTitle":
-											lead.JobTitle = value;
-											break;
-										case "Email":
-											lead.Email = value;
-											break;
-										case "Address":
-											lead.Address = value;
-											break;
-										case "City":
-											lead.City = value;
-											break;
-									
-										case "State":
-											lead.State = value;
-											break;
-										case "ZipCode":
-											lead.ZipCode = value;
-											break;
-										case "Country":
-											lead.Country = value;
-											break;
-										case "Notes":
-											lead.Notes = value;
-											break;
-										case "Industry":
-											lead.Industry = value;
-											break;
-										case "LeadSourceDetails":
-											lead.LeadSourceDetails = value;
-											break;
-									
-									
-									
-										
-									}
-								}
-							}
+                                if (!string.IsNullOrEmpty(value))
+                                {
+                                    switch (mapping.DbColumn)
+                                    {
+                                        case "FirstName":
+                                            lead.FirstName = value;
+                                            break;
+                                        case "LastName":
+                                            lead.LastName = value;
+                                            break;
+                                        case "PhoneNumber":
+                                            lead.PhoneNumber = value.Trim();
+                                            break;
+                                            // Add other cases as needed
+                                    }
+                                }
+                            }
 
-							// Add the lead to the batch list for saving
-							leadsToSave.Add(lead);
+                            leadsToSave.Add(lead);
 
-							// Save the batch when it reaches a certain size (e.g., every 100 records)
-							if (leadsToSave.Count >= 100)
-							{
-								_context.Leads.AddRange(leadsToSave);
-								await _context.SaveChangesAsync();
-								leadsToSave.Clear(); // Clear the list after saving
-							}
-						}
+                            if (leadsToSave.Count >= 100)
+                            {
+                                _context.Leads.AddRange(leadsToSave);
+                                await _context.SaveChangesAsync();
+                                leadsToSave.Clear();
+                                return RedirectToAction("Form", "Application", new { area = "Employee" });
+                            }
+                        }
 
-						// Save any remaining leads
-						if (leadsToSave.Any())
-						{
-							_context.Leads.AddRange(leadsToSave);
-							await _context.SaveChangesAsync();
-						}
+                        if (leadsToSave.Any())
+                        {
+                            _context.Leads.AddRange(leadsToSave);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction("Form", "Application", new { area = "Employee" });
+                        }
 
-						return RedirectToAction("AllLead");
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				// Log the exception for debugging purposes
-				Console.WriteLine("Error occurred: " + ex.Message);
+                        TempData["Success"] = "Lead data successfully uploaded.";
+                        return RedirectToAction("Form", "Application", new { area = "Employee" });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred: " + ex.Message);
+                ViewBag.ErrorMessage = "An error occurred while uploading data. Please try again.";
+                return RedirectToAction("Form", "Application", new { area = "Employee" });
+            }
+        }
 
-				// Display a generic error message to the user
-				ViewBag.ErrorMessage = "An error occurred while uploading data. Please try again.";
-				return View("BulkUpload"); // Assuming BulkUpload is the name of your upload view
-			}
-		}
-		// Helper method to get the column index based on header name
-		private int GetColumnIndex(ExcelWorksheet worksheet, string columnName)
+        // Helper method to get the column index based on header name
+        private int GetColumnIndex(ExcelWorksheet worksheet, string columnName)
         {
             var colCount = worksheet.Dimension?.Columns ?? 0;
             for (int col = 1; col <= colCount; col++)
@@ -307,19 +255,9 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
 
             return Json(new { data = leadData });
         }
-
         public async Task<IActionResult> Edit(int id)
-        {
-            //var brand = await _context.Brands.ToListAsync();
-            //var productTypes = await _context.ProductTypes.ToListAsync();
-            //var product = await _context.Products.ToListAsync();
-            //var interestTags = await _context.InterestedTags.ToListAsync();
+        { 
             var referrals = await _context.Referrals.ToListAsync();
-
-            //ViewBag.BrandList = new SelectList(brand, "BrandId", "ProjectName");
-            //ViewBag.ProductTypes = new SelectList(productTypes, "ProductTypeId", "Description");
-            //ViewBag.ProductsList = new SelectList(product, "ProductId", "ProductName");
-            //ViewBag.InterestedTags = interestTags ?? new List<InterestedTag>();
 
             ViewBag.Referral = new SelectList(referrals, "ReferralId", "Name");
             var leadViewModel = await _context.Leads.FindAsync(id);
@@ -327,11 +265,8 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
             {
                 return NotFound();
             }
-
-
             return View(leadViewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> EditLeadForm(int? leadId, Lead vm)
         {
@@ -390,8 +325,6 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
             TempData["Success"] = "Lead data successfully edited.";
             return RedirectToAction("InProcessLead");
         }
-
-
         private bool LeadExists(int id)
         {
             return _context.Leads.Any(e => e.LeadId == id);
@@ -591,8 +524,6 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
-
-
         public async Task<IActionResult> DeadLead()
         {
              
@@ -628,13 +559,11 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
 
             return Json(new { data = deadLeads });
         }
-
         public async Task<IActionResult> ConvertedLead()
         {
 
             return View();
         }
-
         public async Task<JsonResult> GetConvertedLead()
         {
 			// Replace the current user retrieval with session based approach
@@ -695,19 +624,16 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
 
             return View();
         }
-
         public async Task<IActionResult> Follow()
         {
 
             return View();
         }
-
         public async Task<IActionResult> FollowupStatus()
         {
 
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> LeadForm(Lead vm)
         {
@@ -835,7 +761,6 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> EditLead(Lead vm)
         {
@@ -869,7 +794,6 @@ namespace LegalAndGeneralConsultantCRM.Areas.Employee.Controllers
                 return Json(new { success = false, message = "An error occurred while updating the lead. Please try again.", error = ex.Message });
             }
         }
-
         public async Task<JsonResult> GetAllUniversityData()
         {
             var universities = await _context.Universities

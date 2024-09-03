@@ -346,6 +346,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             var mappings = [];
             document.getElementById("cli").click();
+
             function handleFile(file) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
@@ -417,8 +418,9 @@
             });
 
             var submitMappingBtn = document.getElementById("submitMappingBtn");
-            submitMappingBtn.addEventListener("click", function () {
-                // Check if mappings array is empty
+            submitMappingBtn.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent default form submission
+
                 // Check if mappings array is empty
                 if (mappings.length === 0) {
                     alert("Please first map the columns.");
@@ -438,15 +440,12 @@
                     alert("Please select a source.");
                     return; // Exit the function if dropdown value is not selected
                 }
-                event.preventDefault();
 
                 var formData = new FormData();
-                formData.append("dropdownValue", document.getElementById("options").value); // Include dropdown value
-
+                formData.append("dropdownValue", dropdownValue); // Include dropdown value
                 formData.append("file", document.getElementById("file").files[0]);
 
                 mappings.forEach(function (mapping, index) {
-
                     formData.append("mappings[" + index + "].ExcelColumn", mapping.excelColumn);
                     formData.append("mappings[" + index + "].DbColumn", mapping.dbColumn);
                 });
@@ -457,8 +456,11 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
-                        // Handle response data as needed
+                        if (data.success) {
+                            window.location.href = data.redirectUrl; // Redirect to the desired page
+                        } else {
+                            console.log("Upload failed:", data.message);
+                        }
                     })
                     .catch(error => {
                         console.error("Error:", error);
@@ -477,15 +479,13 @@
 
                     var deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "Delete";
-                    deleteBtn.classList.add("deleteMappingBtn", "btn", "btn-primary"); // Add "btn-primary" class here
+                    deleteBtn.classList.add("deleteMappingBtn", "btn", "btn-primary");
 
-                    deleteBtn.classList.add("deleteMappingBtn");
                     deleteBtn.dataset.index = index;
                     mappingDisplay.appendChild(deleteBtn);
 
                     // Add a line break after the delete button
                     mappingDisplay.appendChild(document.createElement("br"));
-                    // Add a line break after the delete button
                     mappingDisplay.appendChild(document.createElement("br"));
 
                     mappingDisplayDiv.appendChild(mappingDisplay);

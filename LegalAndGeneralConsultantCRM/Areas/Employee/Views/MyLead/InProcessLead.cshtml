@@ -1,9 +1,11 @@
 ﻿<head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include Bootstrap CSS and other necessary libraries -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <style>
         .country-code {
@@ -85,6 +87,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
+                                <button id="exportToExcel" class="btn btn-primary mb-3">Export to Excel</button>
                                 <table id="leadTable" class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
                                     <thead>
                                         <tr>
@@ -94,11 +97,11 @@
                                             <th style="background-color: #4e0973;color:white;">Phone Number</th>
                                             <th style="background-color: #4e0973;color:white;">City</th>
                                             <th style="background-color: #4e0973;color:white;">Status</th>
-
                                             <th style="background-color: #4e0973;color:white;">Follow-Ups</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <!-- Data will be populated here by DataTables -->
                                     </tbody>
                                 </table>
                             </div>
@@ -395,23 +398,22 @@
 
 
 <script>
-     $(document).ready(function () {
-         $('#leadTable').DataTable({
-             "ajax": {
-                 "url": "/Employee/MyLead/GetAllocatedLeadData",
-                 "type": "GET",
-                 "datatype": "json"
-             },
-             "columns": [
-                 { "data": "fullName", "autoWidth": true },
-                 { "data": "email", "autoWidth": true },
-                 { "data": "gender", "autoWidth": true },
-                 { "data": "phoneNumber", "autoWidth": true },
-                 { "data": "city", "autoWidth": true },
-                 {
-                     "data": "followUpStatus",
+    $(document).ready(function () {
+        $('#leadTable').DataTable({
+            "ajax": {
+                "url": "/Employee/MyLead/GetAllocatedLeadData",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "fullName", "autoWidth": true },
+                { "data": "email", "autoWidth": true },
+                { "data": "gender", "autoWidth": true },
+                { "data": "phoneNumber", "autoWidth": true },
+                { "data": "city", "autoWidth": true },
+                {
+                    "data": "followUpStatus",
 
-<<<<<<< HEAD
                     "autoWidth": true,
                     "render": function (data, type, row) {
                         if (data === "Converted Lead") {
@@ -469,6 +471,16 @@
 
             ]
         });
+
+
+        $('#exportToExcel').on('click', function () {
+            console.log("hiiiiiii");
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.table_to_sheet($('#leadTable')[0]);
+            XLSX.utils.book_append_sheet(wb, ws, 'Lead Data');
+            XLSX.writeFile(wb, 'LeadData.xlsx');
+        });
+        
         $('#leadSource').change(function () {
             if ($(this).val() === 'Other') {
                 $('#show').show();
@@ -496,153 +508,66 @@
         $('#saveLeadBtn').on('click', function () {
             // Clear previous validation errors
             $('.validation-error').remove();
-=======
-                     "autoWidth": true,
-                     "render": function (data, type, row) {
-                         if (data === "Converted Lead") {
-                             return '<span class="badge badge-pill bg-success">Converted Lead</span>';
-                         } else if (data === "Dead Lead") {
-                             return '<span class="badge badge-pill bg-danger">Dead Lead</span>';
-                         } else if (data === "Cold Lead") {
-                             return '<span class="badge badge-pill bg-dark">Cold Lead</span>';
-                         } else if (data === "Future Lead") {
-                             return '<span class="badge badge-pill bg-secondary">Future Lead</span>';
-                         } else if (data === "Hot Lead") {
-                             return '<span class="badge badge-pill bg-primary">Hot Lead</span>';
-                         } else if (data === "Warm Lead") {
-                             return '<span class="badge badge-pill bg-info">Warm Lead</span>';
-                         } else {
-                             return '<span class="badge badge-pill bg-warning">Pending Lead</span>';
-                         }
-                     }
-                 },
 
-                 {
-                     "data": "leadId",
-                     "render": function (data, type, row) {
-                         return '' +
-                             '<a class="edit-lead btn btn-link me-5 text-primary" ' +
-                             'data-leadid="' + row.leadId + '" ' +
-                             'data-firstname="' + row.firstName + '" ' +
-                             'data-lastname="' + row.lastName + '" ' +
-                             'data-email="' + row.email + '" ' +
-                             'data-gender="' + row.gender + '" ' +
-                             'data-phonenumber="' + row.phoneNumber + '" ' +
-                             'data-leadsource="' + row.leadSource + '" ' +
-                             'data-city="' + row.city + '" ' +
-                             'data-notes="' + row.notes + '" ' +
-                             'style="cursor: pointer;">' +
-                             '<span class="icon-container">' +
-                             '<i class="bi bi-pencil"></i>' +
-                             '<span class="tooltip-text">Edit</span>' +
-                             '</span></a> ' +
+            let isValid = true;
 
-                             '<a class="delete-lead btn btn-link me-5 text-danger" ' +
-                             'data-leadid="' + row.leadId + '" ' +
-                             'style="cursor: pointer;">' +
-                             '<span class="icon-container">' +
-                             '<i class="bi bi-trash"></i>' +
-                             '<span class="tooltip-text">Delete</span>' +
-                             '</span></a>' +
+            // Validate First Name
+            var firstName = $('#firstName').val().trim();
+            var phoneNumber = $('#phoneNumber').val().trim();
 
-                             '<a href="/Employee/MyLead/HistoryLead?leadId=' + row.leadId + '" ' +
-                             'class="btn btn-link text-info">' +
-                             '<i class="bi bi-clock"></i> View History</a>';
-                     }
-                 }
+            // Remove any existing validation errors
+            $('.validation-error').remove();
+
+            // Check if firstName is empty
+            if (firstName === '') {
+                isValid = false;
+                $('#firstName').after('<span class="validation-error text-danger">First Name is required.</span>');
+            } else if (firstName.length < 3) {
+                // Check if firstName has at least 3 characters
+                isValid = false;
+                $('#firstName').after('<span class="validation-error text-danger">First Name must be at least 3 characters long.</span>');
+            } else if (/^\d/.test(firstName)) {
+                // Check if firstName starts with a number
+                isValid = false;
+                $('#firstName').after('<span class="validation-error text-danger">First Name cannot start with a number.</span>');
+            }
+
+            var lastName = $('#lastName').val().trim();
 
 
-             ]
-         });
-           $('#leadSource').change(function() {
-       if ($(this).val() === 'Other') {
-         $('#show').show();
-       } else {
-         $('#show').hide();
-       }
-     });
-     $('#leadTable').on('click', '.view-history', function() {
-     var leadId = $(this).data('leadid');
-    console.log('Lead ID:', leadId); // Add this line to check if leadId is correct
+            // Check if firstName is empty
+            if (lastName === '') {
+                isValid = false;
+                $('#lastName').after('<span class="validation-error text-danger">Last Name is required.</span>');
+            } else if (lastName.length < 3) {
+                // Check if firstName has at least 3 characters
+                isValid = false;
+                $('#lastName').after('<span class="validation-error text-danger">Last Name must be at least 3 characters long.</span>');
+            } else if (/^\d/.test(lastName)) {
+                // Check if firstName starts with a number
+                isValid = false;
+                $('#lastName').after('<span class="validation-error text-danger">Last Name cannot start with a number.</span>');
+            }
 
-     $.ajax({
-         url: '/Employee/MyLead/HistoryLead',
-         type: 'Post',
-         data: { leadId: leadId },
-         success: function(response) {
-             // Handle success
-         },
-         error: function(xhr, status, error) {
-             console.error('AJAX Error:', error);
-         }
-     });
-     });
-         // Save lead button click event
-         $('#saveLeadBtn').on('click', function () {
-             // Clear previous validation errors
-             $('.validation-error').remove();
->>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
-
-             let isValid = true;
-
-             // Validate First Name
-             var firstName = $('#firstName').val().trim();
-             var phoneNumber = $('#phoneNumber').val().trim();
-
-             // Remove any existing validation errors
-             $('.validation-error').remove();
-
-             // Check if firstName is empty
-             if (firstName === '') {
-                 isValid = false;
-                 $('#firstName').after('<span class="validation-error text-danger">First Name is required.</span>');
-             } else if (firstName.length < 3) {
-                 // Check if firstName has at least 3 characters
-                 isValid = false;
-                 $('#firstName').after('<span class="validation-error text-danger">First Name must be at least 3 characters long.</span>');
-             } else if (/^\d/.test(firstName)) {
-                 // Check if firstName starts with a number
-                 isValid = false;
-                 $('#firstName').after('<span class="validation-error text-danger">First Name cannot start with a number.</span>');
-             }
-
-             var lastName = $('#lastName').val().trim();
+            var city = $('#city').val().trim();
 
 
-             // Check if firstName is empty
-             if (lastName === '') {
-                 isValid = false;
-                 $('#lastName').after('<span class="validation-error text-danger">Last Name is required.</span>');
-             } else if (lastName.length < 3) {
-                 // Check if firstName has at least 3 characters
-                 isValid = false;
-                 $('#lastName').after('<span class="validation-error text-danger">Last Name must be at least 3 characters long.</span>');
-             } else if (/^\d/.test(lastName)) {
-                 // Check if firstName starts with a number
-                 isValid = false;
-                 $('#lastName').after('<span class="validation-error text-danger">Last Name cannot start with a number.</span>');
-             }
-
-             var city = $('#city').val().trim();
-
-
-             // Check if firstName is empty
-             if (city === '') {
-                 isValid = false;
-                 $('#city').after('<span class="validation-error text-danger">City  is required.</span>');
-             } else if (city.length < 3) {
-                 // Check if firstName has at least 3 characters
-                 isValid = false;
-                 $('#city').after('<span class="validation-error text-danger">City must be at least 3 characters long.</span>');
-             } else if (/^\d/.test(city)) {
-                 // Check if firstName starts with a number
-                 isValid = false;
-                 $('#city').after('<span class="validation-error text-danger">City cannot start with a number.</span>');
-             }
+            // Check if firstName is empty
+            if (city === '') {
+                isValid = false;
+                $('#city').after('<span class="validation-error text-danger">City  is required.</span>');
+            } else if (city.length < 3) {
+                // Check if firstName has at least 3 characters
+                isValid = false;
+                $('#city').after('<span class="validation-error text-danger">City must be at least 3 characters long.</span>');
+            } else if (/^\d/.test(city)) {
+                // Check if firstName starts with a number
+                isValid = false;
+                $('#city').after('<span class="validation-error text-danger">City cannot start with a number.</span>');
+            }
 
 
 
-<<<<<<< HEAD
             // Validate Email
             const email = $('#email').val().trim();
             const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
@@ -693,272 +618,207 @@
                 }
             });
         });
-=======
-             // Validate Email
-             const email = $('#email').val().trim();
-             const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
-             if (email === '') {
-                 isValid = false;
-                 $('#email').after('<span class="validation-error text-danger">Email is required.</span>');
-             } else if (!emailPattern.test(email)) {
-                 isValid = false;
-                 $('#email').after('<span class="validation-error text-danger">Invalid email format.</span>');
-             }
-             // Validate Phone Number
-
-             // Validate Phone Number
-             if ($('#gender').val().trim() === '') {
-                 isValid = false;
-                 $('#gender').after('<span class="validation-error text-danger">  Gender is required.</span>');
-             }
-             if ($('#leadSource').val().trim() === '') {
-                 isValid = false;
-                 $('#leadSource').after('<span class="validation-error text-danger">  Lead Source is required.</span>');
-             }
-             if (!isValid) {
-                 return;
-             }
-
-             var form = $('#leadForm');
-             $.ajax({
-                 type: form.attr('method'),
-                 url: '/Employee/MyLead/LeadForm', // Set the action URL here
-                 data: form.serialize(),
-                 success: function (response) {
-                     console.log(response);
-                     if (response.success) {
-                         alert(response.message);
-                         form[0].reset(); // Clear the form
-                         $('#add-new-events').modal('hide');
-                         $('#leadTable').DataTable().ajax.reload(); // Reload the data table
-                     } else {
-
-                     // Show error message if not successful
-                     alert(response.message);
-
-                     }
-                 },
-                 error: function (error) {
-                     console.log(error); // Log the error for debugging
-                     // alert('Failed to add lead');
-                 }
-             });
-         });
->>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
 
 
-         $(document).on('click', '.edit-lead', function () {
-             // Get the data attributes from the clicked button
-             const leadId = $(this).data('leadid');
-             const firstName = $(this).data('firstname');
-             const lastName = $(this).data('lastname');
-             const email = $(this).data('email');
-             const gender = $(this).data('gender');
-             const phoneNumber = $(this).data('phonenumber');
-             const leadSource = $(this).data('leadsource');
-             const notes = $(this).data('notes');
-             const city = $(this).data('city');
+        $(document).on('click', '.edit-lead', function () {
+            // Get the data attributes from the clicked button
+            const leadId = $(this).data('leadid');
+            const firstName = $(this).data('firstname');
+            const lastName = $(this).data('lastname');
+            const email = $(this).data('email');
+            const gender = $(this).data('gender');
+            const phoneNumber = $(this).data('phonenumber');
+            const leadSource = $(this).data('leadsource');
+            const notes = $(this).data('notes');
+            const city = $(this).data('city');
 
-             // Populate the modal fields with the lead data
-             $('#editLeadModal #editLeadId').val(leadId);
-             $('#editLeadModal #editFirstName').val(firstName);
-             $('#editLeadModal #editLastName').val(lastName);
-             $('#editLeadModal #editEmail').val(email);
-             $('#editLeadModal #editGender').val(gender);
-             $('#editLeadModal #editPhoneNumber').val(phoneNumber);
-             $('#editLeadModal #editLeadSource').val(leadSource);
-             $('#editLeadModal #city').val(city);
-             $('#editLeadModal #notes').val(notes);
+            // Populate the modal fields with the lead data
+            $('#editLeadModal #editLeadId').val(leadId);
+            $('#editLeadModal #editFirstName').val(firstName);
+            $('#editLeadModal #editLastName').val(lastName);
+            $('#editLeadModal #editEmail').val(email);
+            $('#editLeadModal #editGender').val(gender);
+            $('#editLeadModal #editPhoneNumber').val(phoneNumber);
+            $('#editLeadModal #editLeadSource').val(leadSource);
+            $('#editLeadModal #city').val(city);
+            $('#editLeadModal #notes').val(notes);
 
-             // Show the modal
-             $('#editLeadModal').modal('show');
-         });
+            // Show the modal
+            $('#editLeadModal').modal('show');
+        });
 
 
-         // Save edited lead
+        // Save edited lead
 
 
 
-         $(document).on('click', '.delete-lead', function () {
-             var leadId = $(this).data('leadid');
-             if (confirm('Are you sure you want to delete this lead?')) {
-                 // Perform the delete operation (AJAX request)
-                 $.ajax({
-                     url: '/Employee/MyLead/DeleteLead',
-                     type: 'POST',
-                     data: { id: leadId },
-                     success: function (response) {
-                         if (response.success) {
-                             alert('Lead deleted successfully.');
-                             $('#leadTable').DataTable().ajax.reload();
-                         } else {
-                             alert('Error deleting lead: ' + response.message);
-                         }
-                     },
-                     error: function (error) {
-                         alert('Error deleting lead: ' + error.statusText);
-                     }
-                 });
-             }
-         });
-         // Save follow-up button click event
-         $('#saveFollowUp').on('click', function () {
-             debugger
-             var form = $('#followUpForm');
-             $.ajax({
-                 type: form.attr('method'),
-                 url: form.attr('action'),
-                 data: form.serialize(),
-                 success: function (response) {
-                     console.log(response);
-                     if (response.success) {
-                         alert(response.message);
-                         $('#followUpModal').modal('hide');
-                         $('#leadTable').DataTable().ajax.reload(); // Reload the data table
-                     } else {
-                         alert(response.message);
-                     }
-                 },
-                 error: function (error) {
-                     console.log(error); // Log the error for debugging
-                     alert('Failed to save follow-up');
-                 }
-             });
-         });
-         // Open modal and populate details
-         $(document).on('click', '.open-modal', function () {
-             var leadId = $(this).data('leadid');
-             var fullName = $(this).data('fullname');
+        $(document).on('click', '.delete-lead', function () {
+            var leadId = $(this).data('leadid');
+            if (confirm('Are you sure you want to delete this lead?')) {
+                // Perform the delete operation (AJAX request)
+                $.ajax({
+                    url: '/Employee/MyLead/DeleteLead',
+                    type: 'POST',
+                    data: { id: leadId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Lead deleted successfully.');
+                            $('#leadTable').DataTable().ajax.reload();
+                        } else {
+                            alert('Error deleting lead: ' + response.message);
+                        }
+                    },
+                    error: function (error) {
+                        alert('Error deleting lead: ' + error.statusText);
+                    }
+                });
+            }
+        });
+        // Save follow-up button click event
+        $('#saveFollowUp').on('click', function () {
+            debugger
+            var form = $('#followUpForm');
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        alert(response.message);
+                        $('#followUpModal').modal('hide');
+                        $('#leadTable').DataTable().ajax.reload(); // Reload the data table
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (error) {
+                    console.log(error); // Log the error for debugging
+                    alert('Failed to save follow-up');
+                }
+            });
+        });
+        // Open modal and populate details
+        $(document).on('click', '.open-modal', function () {
+            var leadId = $(this).data('leadid');
+            var fullName = $(this).data('fullname');
 
-             // Set leadId and fullName in the modal form
-             $('#followUpModal #leadId').val(leadId);
-             $('#followUpModal #leadName').val(fullName);
+            // Set leadId and fullName in the modal form
+            $('#followUpModal #leadId').val(leadId);
+            $('#followUpModal #leadName').val(fullName);
 
-             // Fetch follow-up data using AJAX
-             $.ajax({
-                 url: '/Employee/MyLead/GetFollowUpDetails', // Adjust the URL to your specific endpoint
-                 type: 'GET',
-                 data: { leadId: leadId },
-                 success: function (response) {
-                     if (response.success) {
-                         // Populate the modal with the retrieved data
-                         $('#followUpModal #leadStatus').val(response.data.status);
-                         $('#followUpModal #reminderDate').val(response.data.reminderDate ? new Date(response.data.reminderDate).toISOString().substring(0, 10) : '');
-                         $('#followUpModal #description').val(response.data.description);
-                     } else {
-                         // Clear the fields if no data is returned
-                         $('#followUpModal #leadStatus').val('');
-                         $('#followUpModal #reminderDate').val('');
-                         $('#followUpModal #description').val('');
-                     }
-                 },
-                 error: function (error) {
-                     console.log(error); // Log the error for debugging
-                     // Handle the error if needed
-                 }
-             });
+            // Fetch follow-up data using AJAX
+            $.ajax({
+                url: '/Employee/MyLead/GetFollowUpDetails', // Adjust the URL to your specific endpoint
+                type: 'GET',
+                data: { leadId: leadId },
+                success: function (response) {
+                    if (response.success) {
+                        // Populate the modal with the retrieved data
+                        $('#followUpModal #leadStatus').val(response.data.status);
+                        $('#followUpModal #reminderDate').val(response.data.reminderDate ? new Date(response.data.reminderDate).toISOString().substring(0, 10) : '');
+                        $('#followUpModal #description').val(response.data.description);
+                    } else {
+                        // Clear the fields if no data is returned
+                        $('#followUpModal #leadStatus').val('');
+                        $('#followUpModal #reminderDate').val('');
+                        $('#followUpModal #description').val('');
+                    }
+                },
+                error: function (error) {
+                    console.log(error); // Log the error for debugging
+                    // Handle the error if needed
+                }
+            });
 
-             // Show the modal
-             $('#followUpModal').modal('show');
-         });
+            // Show the modal
+            $('#followUpModal').modal('show');
+        });
 
 
 
-     });
+    });
 
-     $(document).ready(function () {
-         $('#updateLeadBtn').on('click', function (e) {
-             e.preventDefault(); // Prevent default form submission
-             var isValid = true;
+    $(document).ready(function () {
+        $('#updateLeadBtn').on('click', function (e) {
+            e.preventDefault(); // Prevent default form submission
+            var isValid = true;
 
-<<<<<<< HEAD
             var firstName = $('#editFirstName').val().trim();
             var lastName = $('#editLastName').val().trim();
             var email = $('#editEmail').val().trim();
             var gender = $('#editGender').val().trim();
 
             var leadSource = $('#editLeadSource').val().trim();
-=======
-             var firstName = $('#editFirstName').val().trim();
-             var lastName = $('#editLastName').val().trim();
-             var email = $('#editEmail').val().trim();
-             var gender = $('#editGender').val().trim();
->>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
 
-             var leadSource = $('#editLeadSource').val().trim();
+            // Remove any existing validation errors
+            $('.validation-error').remove();
 
-             // Remove any existing validation errors
-             $('.validation-error').remove();
+            // Validate First Name
+            if (firstName === '') {
+                isValid = false;
+                $('#editFirstName').after('<span class="validation-error text-danger">First Name is required.</span>');
+            } else if (firstName.length < 3) {
+                isValid = false;
+                $('#editFirstName').after('<span class="validation-error text-danger">First Name must be at least 3 characters long.</span>');
+            } else if (/^\d/.test(firstName)) {
+                isValid = false;
+                $('#editFirstName').after('<span class="validation-error text-danger">First Name cannot start with a number.</span>');
+            }
 
-             // Validate First Name
-             if (firstName === '') {
-                 isValid = false;
-                 $('#editFirstName').after('<span class="validation-error text-danger">First Name is required.</span>');
-             } else if (firstName.length < 3) {
-                 isValid = false;
-                 $('#editFirstName').after('<span class="validation-error text-danger">First Name must be at least 3 characters long.</span>');
-             } else if (/^\d/.test(firstName)) {
-                 isValid = false;
-                 $('#editFirstName').after('<span class="validation-error text-danger">First Name cannot start with a number.</span>');
-             }
+            // Validate Last Name
+            if (lastName === '') {
+                isValid = false;
+                $('#editLastName').after('<span class="validation-error text-danger">Last Name is required.</span>');
+            } else if (lastName.length < 3) {
+                isValid = false;
+                $('#editLastName').after('<span class="validation-error text-danger">Last Name must be at least 3 characters long.</span>');
+            } else if (/^\d/.test(lastName)) {
+                isValid = false;
+                $('#editLastName').after('<span class="validation-error text-danger">Last Name cannot start with a number.</span>');
+            }
 
-             // Validate Last Name
-             if (lastName === '') {
-                 isValid = false;
-                 $('#editLastName').after('<span class="validation-error text-danger">Last Name is required.</span>');
-             } else if (lastName.length < 3) {
-                 isValid = false;
-                 $('#editLastName').after('<span class="validation-error text-danger">Last Name must be at least 3 characters long.</span>');
-             } else if (/^\d/.test(lastName)) {
-                 isValid = false;
-                 $('#editLastName').after('<span class="validation-error text-danger">Last Name cannot start with a number.</span>');
-             }
-
-<<<<<<< HEAD
-
-=======
-             // Validate Email
-             const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
-             if (email === '') {
-                 isValid = false;
-                 $('#editEmail').after('<span class="validation-error text-danger">Email is required.</span>');
-             } else if (!emailPattern.test(email)) {
-                 isValid = false;
-                 $('#editEmail').after('<span class="validation-error text-danger">Invalid email format.</span>');
-             }
->>>>>>> a97bcd404b940d2fc46219fea9e0f5a464c3999f
+            // Validate Email
+            const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            if (email === '') {
+                isValid = false;
+                $('#editEmail').after('<span class="validation-error text-danger">Email is required.</span>');
+            } else if (!emailPattern.test(email)) {
+                isValid = false;
+                $('#editEmail').after('<span class="validation-error text-danger">Invalid email format.</span>');
+            }
 
 
 
-             // Validate Gender
-             if (gender === '') {
-                 isValid = false;
-                 $('#editGender').after('<span class="validation-error text-danger">Gender is required.</span>');
-             }
+            // Validate Gender
+            if (gender === '') {
+                isValid = false;
+                $('#editGender').after('<span class="validation-error text-danger">Gender is required.</span>');
+            }
 
-             if (isValid) {
-                 var form = $('#editLeadForm');
-                 $.ajax({
-                     type: 'POST',
-                     url: '/Employee/MyLead/EditLead', // Replace with your actual endpoint
-                     data: form.serialize(),
-                     success: function (response) {
-                         console.log(response);
-                         if (response.success) {
-                             alert(response.message);
-                             $('#editLeadModal').modal('hide');
-                             $('#leadTable').DataTable().ajax.reload(); // Reload the data table
-                         } else {
-                             alert(response.message);
-                         }
-                     },
-                     error: function (error) {
-                         console.log(error); // Log the error for debugging
-                         alert('Failed to update lead');
-                     }
-                 });
-             }
-         });
-     });
+            if (isValid) {
+                var form = $('#editLeadForm');
+                $.ajax({
+                    type: 'POST',
+                    url: '/Employee/MyLead/EditLead', // Replace with your actual endpoint
+                    data: form.serialize(),
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success) {
+                            alert(response.message);
+                            $('#editLeadModal').modal('hide');
+                            $('#leadTable').DataTable().ajax.reload(); // Reload the data table
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error); // Log the error for debugging
+                        alert('Failed to update lead');
+                    }
+                });
+            }
+        });
+    });
 
 </script>
